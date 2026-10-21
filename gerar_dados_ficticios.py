@@ -61,7 +61,7 @@ def construir(mes, k):
             m.linha(20, "Presente da família", PAY, "PIX", "Eventual", 200, "receita", "Presente da família", "PIX RECEBIDO")
         for d in range(1, 11):
             m.linha(d * 2, "Rendimento da reserva", PAY, "CDI", "Eventual", r2(3.4 + rnd.random() * 2.4), "rendimento", "Rendimentos", "RENDIMENTO DIARIO")
-        m.linha(14, "Transferência para a Conta Global", PAY, "PIX", "", -300, "interno", "Entre contas", "PIX ENVIADO", nota="Movimento entre as suas contas (viagem)")
+        m.linha(14, "Transferência para a Revolut", PAY, "PIX", "", -300, "interno", "Entre contas", "PIX ENVIADO", nota="Movimento entre as suas contas (viagem)")
         m.linha(15, "Acerto com a Bia (Splitwise)", PAY, "PIX", "", 380 + k * 40, "acerto", "Acerto", "PIX RECEBIDO BIA", nota="Acerto mensal com a Bia: fora dos gastos e das entradas")
     # ---------- fixos ----------
     if completo:
