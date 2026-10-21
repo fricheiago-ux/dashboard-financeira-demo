@@ -325,6 +325,15 @@
   /* Tarefas pendentes: checklist no topo; some quando não há nada a fazer */
   .tarefas { border-left: 6px solid var(--ouro-claro); margin-bottom: 16px; padding: 16px 20px 8px; }
   .tarefas[hidden] { display: none; }
+  #tarefas-cab { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+  .recolher { margin-left: auto; flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: var(--ouro-texto); background: transparent; border: 1.5px solid var(--borda); cursor: pointer; transition: background .25s, transform .45s var(--spring); }
+  .recolher svg { width: 18px; height: 18px; }
+  @media (hover: hover) { .recolher:hover { background: #F6EDCB; } }
+  #tarefas-corpo { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .5s var(--ease); }
+  #tarefas-lista { min-height: 0; overflow: hidden; }
+  .tarefas.recolhida #tarefas-corpo { grid-template-rows: 0fr; }
+  .tarefas.recolhida .recolher { transform: rotate(-90deg); }
+  .tarefas.recolhida { padding-bottom: 0; }
   .tarefa { display: flex; align-items: center; gap: 14px; text-align: left; padding: 13px 10px; margin: 0 -10px; border-radius: 14px; border-top: 1px solid var(--linha); width: calc(100% + 20px); max-height: 110px; overflow: hidden; transition: background .3s var(--ease), transform .4s var(--spring), max-height .7s var(--ease), opacity .6s var(--ease), padding .7s var(--ease), border-color .7s; }
   .tarefa:first-of-type { border-top: 0; }
   .tarefa:active { transform: scale(.985); }
@@ -430,7 +439,7 @@
   .demo-faixa { margin: 0 0 14px; padding: 9px 14px; border-radius: 12px; background: var(--ouro-texto); color: #fff; font-size: 12.5px; font-weight: 700; text-align: center; }
   /* Visual do design system (20/10/2026): siglas manuscritas ao fundo, moedas caindo, capivara e notas no topo, blur ao rolar */
   #decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-  #decor.sobre { z-index: 3; } #decor.sobre .sigla { opacity: .3; }
+  #decor.sobre .sigla { opacity: .3; }  /* regra do Alex (21/10/2026): as siglas ficam SÓ no fundo da página, nunca por cima dos cards (#decor z-index 0, main z-index 1) */
   .sigla svg { display: block; height: 1em; width: .72em; overflow: visible; }
   .sigla { position: absolute; font-family: "Liu Jian Mao Cao", cursive; font-size: 3rem; line-height: 1; white-space: nowrap; color: var(--tinta); opacity: .47; transform: rotate(var(--giro, 0deg)); }
   #moedas { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
@@ -449,7 +458,7 @@
   .animate-on-scroll.is-done { animation: none; }
 
   /* Personagens das animações do design system, desenhados só com a tinta (sem o fundo do vídeo) para ficarem bem sobre o cinza e sobre os cards */
-  .palco { position: relative; flex: 0 0 100%; height: 138px; margin-top: -6px; pointer-events: none; overflow: hidden; }
+  .palco { position: relative; width: 100%; height: 138px; margin: -6px 0 10px; pointer-events: none; overflow: hidden; }
   .chao { position: absolute; left: 0; right: 0; bottom: 5px; border-bottom: 2px dashed rgba(16, 26, 92, .2); }
   .personagem { position: absolute; bottom: 4px; height: 124px; }
   .personagem canvas { display: block; height: 100%; width: auto; }
@@ -553,20 +562,21 @@
       <button class="icone-btn" id="proximo" aria-label="Próximo mês">›</button>
       <button class="primario" id="atualizar">Atualizar dados</button>
     </div>
-    <div class="palco" aria-hidden="true">
-      <span class="chao"></span>
-      <div class="personagem fumante" data-video="imagens/doodle-1.mp4"><canvas width="130" height="182"></canvas></div>
-      <div class="personagem xadrez" data-video="imagens/doodle-4.mp4" data-recorte="78,0,116,182"><canvas width="116" height="182"></canvas></div>
-      <div class="personagem papeis" data-video="imagens/doodle-3.mp4"><canvas width="214" height="186"></canvas></div>
-    </div>
   </header>
 
   <div id="avisos"></div>
 
   <!-- Tarefas pendentes (some quando tudo está feito) -->
   <div class="card tarefas" id="tarefas" style="--cor: var(--ouro-claro)">
-    <div class="titulo">Tarefas pendentes <span class="contador" id="tarefas-total"></span></div>
-    <div id="tarefas-lista"></div>
+    <div class="titulo" id="tarefas-cab">Tarefas pendentes <span class="contador" id="tarefas-total"></span><button class="recolher" id="tarefas-recolher" type="button" aria-expanded="true" aria-controls="tarefas-corpo" aria-label="Recolher tarefas pendentes"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+    <div id="tarefas-corpo"><div id="tarefas-lista"></div></div>
+  </div>
+
+  <div class="palco" aria-hidden="true">
+    <span class="chao"></span>
+    <div class="personagem fumante" data-video="imagens/doodle-1.mp4"><canvas width="130" height="182"></canvas></div>
+    <div class="personagem xadrez" data-video="imagens/doodle-4.mp4" data-recorte="78,0,116,182"><canvas width="116" height="182"></canvas></div>
+    <div class="personagem papeis" data-video="imagens/doodle-3.mp4"><canvas width="214" height="186"></canvas></div>
   </div>
 
   <!-- (01) Visão geral: big numbers, entradas, saídas, metas -->
@@ -774,7 +784,7 @@ const F_DESENHADO = '<svg viewBox="0 0 22 30" aria-label="F" role="img"><path d=
 const SIGLAS = ["k7", "nu", "pqp", "slk", "F"];
 function siglasDeFundo() {
   const caixa = $("decor"), alt = document.documentElement.scrollHeight, celular = innerWidth <= 640;
-  // Tela larga: as siglas ficam nas laterais, onde não tem card (por isso aparecem todas). Tela estreita: ficam por cima, bem fraquinhas.
+  // Tela larga: as siglas ficam nas laterais, onde não tem card (por isso aparecem todas). Tela estreita: ficam bem fraquinhas e atrás dos cards (nunca por cima).
   const lateral = Math.max(0, (innerWidth - 1280) / 2 + 40 - 12), sobre = lateral < 80, passo = sobre ? (celular ? 620 : 520) : 300;
   caixa.classList.toggle("sobre", sobre);
   let seed = 20261021; const rnd = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
@@ -1265,6 +1275,13 @@ function renderTarefas(vindoDeConclusao) {
     + (t.atraso ? '<span class="tarefa-n atraso">' + t.atraso + (t.atraso === 1 ? " atrasado" : " atrasados") + "</span>" : "") + '<span class="tarefa-n">' + plural(t.itens.length) + '</span><span class="seta" aria-hidden="true">›</span></button>').join("");
   $("tarefas-lista").querySelectorAll(".tarefa").forEach(b => b.onclick = e => abrirTarefa(+b.dataset.k, e));
 }
+// Tarefas pendentes: a setinha recolhe e abre a lista (o estado fica guardado neste navegador, só como conveniência)
+(function () {
+  const card = $("tarefas"), bt = $("tarefas-recolher"); if (!card || !bt) return;
+  const aplicar = rec => { card.classList.toggle("recolhida", rec); bt.setAttribute("aria-expanded", String(!rec)); bt.setAttribute("aria-label", rec ? "Abrir tarefas pendentes" : "Recolher tarefas pendentes"); };
+  try { aplicar(localStorage.getItem("tarefas-recolhida") === "1"); } catch (e) {}
+  $("tarefas-cab").addEventListener("click", () => { const rec = !card.classList.contains("recolhida"); aplicar(rec); try { localStorage.setItem("tarefas-recolhida", rec ? "1" : "0"); } catch (e) {} });
+})();
 function confete(alvo) {
   for (let k = 0; k < 16; k++) {
     const c = document.createElement("i"); c.className = "confete"; const ang = Math.PI * 2 * k / 16 + Math.random() * .4, d = 70 + Math.random() * 90;
