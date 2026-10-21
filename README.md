@@ -2,7 +2,7 @@
 
 Painel de finanças pessoais que junta, numa tela só, o que entra, o que sai, quanto sobrou, quanto falta pagar e o que ainda precisa da sua atenção.
 
-> **Esta é uma demonstração.** Todos os nomes, valores, bancos, lojas e pessoas são **fictícios**, gerados pelo script `gerar_dados_ficticios.py`. Nada aqui vem de contas reais. As ações da tela (classificar uma despesa, “já lancei”, atualizar dados) são **simuladas**.
+> **Esta é uma demonstração.** Todos os nomes de pessoas, valores e lojas são **fictícios** (os bancos citados, como Santander, Nubank e Inter, são só exemplos e não têm relação com este projeto), gerados pelo script `gerar_dados_ficticios.py`. Nada aqui vem de contas reais. As ações da tela (classificar uma despesa, “já lancei”, atualizar dados) são **simuladas**.
 
 **Ver a demonstração:** https://fricheiago-ux.github.io/dashboard-financeira-demo/
 
@@ -16,7 +16,7 @@ Painel de finanças pessoais que junta, numa tela só, o que entra, o que sai, q
 - **Bancos, cartão e fatura**: saldos, entradas e saídas por conta, fatura conferida com o total oficial.
 - **Patrimônio**: reserva de emergência (meta de meses do custo de vida e a partir de quanto dá para começar a investir com mais risco), rendimento de cada ativo e evolução do total.
 - **Movimentações** do mês, com busca, filtros (fixos, variáveis, divididos, dúvidas) e nomes amigáveis.
-- Visual próprio: fundo quadriculado, números animados, blur ao rolar, tema dourado.
+- Visual próprio: fundo quadriculado, bonequinhos animados, notas de dinheiro, moedas caindo, números animados, blur ao rolar, tema dourado.
 
 ## Como abrir no computador
 

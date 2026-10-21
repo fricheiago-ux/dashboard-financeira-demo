@@ -421,6 +421,11 @@
   .tot-resumo span { font-size: 13px; font-weight: 700; color: var(--suave); }
   @media (max-width: 640px) { .rv-topo { grid-template-columns: 1fr; } .rv-cadeado { width: 38px; } }
 
+  #card-viagem { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 40%); gap: 22px; align-items: stretch; }
+  #card-viagem:not(:has(.viagem-foto)) { grid-template-columns: 1fr; }
+  #card-viagem .viagem-texto { min-width: 0; align-self: center; }
+  #card-viagem .viagem-foto { width: 100%; height: 100%; min-height: 190px; object-fit: cover; border-radius: 14px; display: block; }
+  @media (max-width: 640px) { #card-viagem { grid-template-columns: 1fr; } #card-viagem .viagem-foto { order: -1; min-height: 150px; max-height: 190px; } }
   .demo-faixa { margin: 0 0 14px; padding: 9px 14px; border-radius: 12px; background: var(--ouro-texto); color: #fff; font-size: 12.5px; font-weight: 700; text-align: center; }
   /* Visual do design system (20/10/2026): siglas manuscritas ao fundo, moedas caindo, capivara e notas no topo, blur ao rolar */
   #decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
@@ -537,13 +542,21 @@
       <div class="sub" id="subtitulo"></div>
     </div>
     <div class="heroi" aria-hidden="true">
+      <img class="nota nota-1" src="imagens/nota-1.webp" alt="" width="494" height="560" decoding="async">
       <img class="capivara" src="imagens/capivara.webp" alt="" width="393" height="720" decoding="async">
+      <img class="nota nota-2" src="imagens/nota-2.webp" alt="" width="483" height="420" decoding="async">
     </div>
     <div class="acoes">
       <button class="icone-btn" id="anterior" aria-label="Mês anterior">‹</button>
       <select id="mes" aria-label="Mês"></select>
       <button class="icone-btn" id="proximo" aria-label="Próximo mês">›</button>
       <button class="primario" id="atualizar">Atualizar dados</button>
+    </div>
+    <div class="palco" aria-hidden="true">
+      <span class="chao"></span>
+      <div class="personagem fumante" data-video="imagens/doodle-1.mp4"><canvas width="130" height="182"></canvas></div>
+      <div class="personagem xadrez" data-video="imagens/doodle-4.mp4" data-recorte="78,0,116,182"><canvas width="116" height="182"></canvas></div>
+      <div class="personagem papeis" data-video="imagens/doodle-3.mp4"><canvas width="214" height="186"></canvas></div>
     </div>
   </header>
 
@@ -584,11 +597,13 @@
     <div class="leg-linha"><span><i style="background: var(--s1)"></i>Entradas</span><span><i style="background: var(--s2)"></i>Seus gastos</span><span>Clique num mês para abrir</span></div>
     <div class="evolucao" id="evolucao" role="img"></div>
     <div class="ev-rotulos" id="ev-rotulos"></div>
+    <div class="personagem menino-chao" data-video="imagens/loading.mp4" aria-hidden="true"><canvas width="250" height="400"></canvas></div>
   </div>
 
   <div class="card clicavel" id="card-viagem" role="button" tabindex="0" aria-label="Ver os gastos da viagem a Lisboa" style="--cor: var(--azul); margin-bottom: 16px">
-    <div class="titulo">Viagem Lisboa <span class="chip tag">✈ tag viagem lisboa</span></div>
-    <div class="big" id="viagem-total"></div><div class="det" id="viagem-det"></div><div class="ver-mais">Ver lançamentos do mês ↓</div>
+    <div class="viagem-texto"><div class="titulo">Viagem Lisboa <span class="chip tag">✈ tag viagem lisboa</span></div>
+    <div class="big" id="viagem-total"></div><div class="det" id="viagem-det"></div><div class="ver-mais">Ver lançamentos do mês ↓</div></div>
+    <img class="viagem-foto" src="imagens/lisboa.webp" alt="Rua Augusta, em Lisboa, ao entardecer" width="900" height="600" loading="lazy" decoding="async" onerror="this.remove()">
   </div>
 
   <div class="card saida" style="--cor: var(--laranja); margin-bottom: 16px"><div class="titulo">Despesas por categoria</div><div class="grupos-despesa" id="categorias"></div></div>
@@ -774,6 +789,45 @@ function siglasDeFundo() {
 
 // Personagens: cada vídeo é lido quadro a quadro e redesenhado só com a tinta (fundo transparente), sem o cinza do vídeo.
 // data-recorte="x,y,largura,altura" mostra só um pedaço do vídeo (o jogador de xadrez sozinho, sem o menino ao lado).
+function tintaDoQuadro(cx, v, W, H, rx = 0, ry = 0, rw = W, rh = H) {
+  cx.drawImage(v, rx, ry, rw, rh, 0, 0, W, H);
+  const id = cx.getImageData(0, 0, W, H), d = id.data;
+  for (let k = 0; k < d.length; k += 4) {
+    const a = Math.max(0, Math.min(1, (226 - Math.min(d[k], d[k + 1], d[k + 2])) / 150));  // quanto mais escuro, mais tinta
+    d[k] = 16; d[k + 1] = 26; d[k + 2] = 92; d[k + 3] = Math.round(a * 255);
+  }
+  cx.putImageData(id, 0, 0);
+}
+function personagens() {
+  const INK = [16, 26, 92];
+  document.querySelectorAll(".personagem").forEach(box => {
+    const cv = box.querySelector("canvas"), W = cv.width, H = cv.height, cx = cv.getContext("2d", { willReadFrequently: true });
+    const [rx, ry, rw, rh] = (box.dataset.recorte || "0,0," + W + "," + H).split(",").map(Number);
+    const v = document.createElement("video"); v.src = box.dataset.video; v.muted = true; v.loop = true; v.playsInline = true; v.preload = "auto";
+    let ativo = false, ultimo = 0;
+    const pinta = () => {
+      cx.drawImage(v, rx, ry, rw, rh, 0, 0, W, H);
+      const id = cx.getImageData(0, 0, W, H), d = id.data;
+      for (let k = 0; k < d.length; k += 4) {
+        const a = Math.max(0, Math.min(1, (226 - Math.min(d[k], d[k + 1], d[k + 2])) / 150));  // quanto mais escuro, mais tinta
+        d[k] = INK[0]; d[k + 1] = INK[1]; d[k + 2] = INK[2]; d[k + 3] = Math.round(a * 255);
+      }
+      cx.putImageData(id, 0, 0);
+    };
+    const quadro = agora => {
+      if (!ativo) return;
+      if (agora - ultimo > 40 && v.readyState >= 2) { ultimo = agora; pinta(); }
+      requestAnimationFrame(quadro);
+    };
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting && !ativo) { ativo = true; v.play().catch(() => {}); requestAnimationFrame(quadro); }
+      else if (!e.isIntersecting && ativo) { ativo = false; v.pause(); }
+    }));
+    io.observe(box);
+    if (SEM_MOVIMENTO) { v.addEventListener("loadeddata", () => { v.currentTime = 0.4; }, { once: true }); v.addEventListener("seeked", pinta, { once: true }); }
+  });
+}
+
 // Moedas caindo: de vez em quando uma moeda desce pela tela, girando (no máximo duas ao mesmo tempo; só no computador)
 function moedasCaindo() {
   if (SEM_MOVIMENTO || innerWidth <= 640) return;
@@ -859,7 +913,7 @@ function htmlTotal(inv) {
   const datas = [...new Set(nomes.flatMap(n => Object.keys(hist[n])))].filter(d => d >= inicio).sort();
   const valorEm = (n, d) => { const ds = Object.keys(hist[n]).sort().filter(x => x <= d); return ds.length ? hist[n][ds[ds.length - 1]] : 0; };
   const pts = datas.map(d => [d, nomes.reduce((s, n) => s + valorEm(n, d), 0)]);
-  const aviso = "O total só conta a partir de " + dataBr(inicio) + ", quando a corretora foi conectado e todos os ativos passaram a ter valor. Cada atualização dos dados acrescenta um ponto.";
+  const aviso = "O total só conta a partir de " + dataBr(inicio) + ", quando o Inter foi conectado e todos os ativos passaram a ter valor. Cada atualização dos dados acrescenta um ponto.";
   if (pts.length < 2) return '<div class="tot-resumo"><b class="sensivel">' + brl(pts[0][1]) + '</b><span>em ' + dataBr(pts[0][0]) + '</span></div><div class="det">Só existe uma foto do patrimônio por enquanto. O gráfico aparece a partir da próxima atualização.</div><div class="det">' + esc(aviso) + "</div>";
   const W = 480, H = 190, esq = 8, dir = 8, topo = 16, base = 30, min = Math.min(...pts.map(p => p[1])), max = Math.max(...pts.map(p => p[1])), folga = (max - min || max * 0.02 || 1) * 0.25;
   const x = i => esq + i / (pts.length - 1) * (W - esq - dir), y = v => topo + (1 - (v - (min - folga)) / (max - min + 2 * folga)) * (H - topo - base);
@@ -961,7 +1015,7 @@ function renderTopo() {
 
   const av = [];
   const nDuv = P.pendentes.duvidas.length;
-  if (ci.conectado && ci.conferencia_fatura && !ci.conferencia_fatura.completa) av.push(["", "<b>Fatura do cartão incompleta.</b> A soma dos lançamentos não bate com o total oficial do Banco Aurora. Atualize os dados."]);
+  if (ci.conectado && ci.conferencia_fatura && !ci.conferencia_fatura.completa) av.push(["", "<b>Fatura do cartão incompleta.</b> A soma dos lançamentos não bate com o total oficial do Nubank. Atualize os dados."]);
   const hojeMes = HOJE.slice(0, 7);
   if (P.mes > hojeMes) av.unshift(["", "<b>Mês que ainda não começou.</b> Só aparece a fatura do cartão que já está aberta (compras de " + nomeMes(hojeMes, true) + "). Entradas e PIX deste mês ainda não existem."]);
   if (!ci.conectado) av.push(["", "<b>Cartão não conectado.</b> As compras no crédito não entram nos números."]);
@@ -979,7 +1033,7 @@ function renderTopo() {
   const inv = P.investimentos;
   const totalInv = inv ? inv.ativos.reduce((s, a) => s + a.atual, 0) : 0;
   if (inv) contar($("b-invest"), totalInv); else $("b-invest").textContent = "Sem dados";
-  $("b-invest-det").innerHTML = inv ? (inv.teste ? '<span class="tag-teste">valores de teste</span> ' : "") + 'Investido. Mais <span class="sensivel">' + brl(inv.caixa || 0) + "</span> em caixa na Pay Verde" : "";
+  $("b-invest-det").innerHTML = inv ? (inv.teste ? '<span class="tag-teste">valores de teste</span> ' : "") + 'Investido. Mais <span class="sensivel">' + brl(inv.caixa || 0) + "</span> em caixa na Nubank" : "";
 
   // Entradas do mês em rosca, divididas por categoria (cores da família do dourado, a maior fatia em ouro antigo)
   const ent0 = Object.entries(P.receitas_por_categoria || {});
@@ -1126,8 +1180,8 @@ function renderMeio() {
 function renderInvestimentos() {
   const inv = P.investimentos;
   if (!inv) { $("inv-topo").innerHTML = '<div class="card vazio">Sem dados de investimentos.</div>'; return; }
-  $("inv-tag").innerHTML = inv.teste ? '<span class="tag-teste" title="' + esc(inv.aviso) + '">valores de teste, exceto a reserva Pay Verde</span>'
-    : '<span class="det">Corretora: valores do app em ' + dataBr(inv.atualizado_em) + ". Reserva Pay Verde: automática</span>";
+  $("inv-tag").innerHTML = inv.teste ? '<span class="tag-teste" title="' + esc(inv.aviso) + '">valores de teste, exceto a reserva Nubank</span>'
+    : '<span class="det">Inter: valores do app em ' + dataBr(inv.atualizado_em) + ". Reserva Nubank: automática</span>";
   const total = inv.ativos.reduce((s, a) => s + a.atual, 0);
   // Ganho só onde o valor aplicado é conhecido (não inventar)
   const comAplicado = inv.ativos.filter(a => a.aplicado != null);
@@ -1136,7 +1190,7 @@ function renderInvestimentos() {
     '<div class="card" style="--cor: var(--laranja)"><div class="titulo">Patrimônio investido</div><div class="big">' + brl(total) + '</div><div class="det">Valor bruto, antes de IR e IOF</div></div>'
     + '<div class="card" style="--cor: var(--laranja)"><div class="titulo">Ganho acumulado</div><div class="big ' + (ganho >= 0 ? "pos" : "neg") + '">' + brl(ganho) + '</div><div class="det">'
       + (aplicado ? ((ganho / aplicado) * 100).toFixed(1).replace(".", ",") + "% sobre " + brl0(aplicado) + " aplicados (onde o valor aplicado é conhecido)" : "") + "</div></div>"
-    + '<div class="card" style="--cor: var(--laranja)"><div class="titulo">Caixa (não investido)</div><div class="big">' + brl(inv.caixa || 0) + '</div><div class="det">Saldo da Pay Verde acima da reserva, para PIX e pagamentos</div></div>';
+    + '<div class="card" style="--cor: var(--laranja)"><div class="titulo">Caixa (não investido)</div><div class="big">' + brl(inv.caixa || 0) + '</div><div class="det">Saldo do Nubank acima da reserva, para PIX e pagamentos</div></div>';
   const porClasse = {};
   inv.ativos.forEach(a => porClasse[a.classe] = (porClasse[a.classe] || 0) + a.atual);
   const classes = Object.keys(CORES_INV).filter(c => porClasse[c]).concat(Object.keys(porClasse).filter(c => !CORES_INV[c]));
@@ -1324,7 +1378,7 @@ function fecharTarefa() {
 }
 
 // Miniaturas de marca desenhadas aqui (letra em cor do banco): sem baixar logos de terceiros
-const MARCAS = { "Banco Aurora": ["#0A7C66", "#fff", "aurora"], "Pay Verde": ["#7ED957", "#111", "PV"], "Benefício Flex": ["#00A859", "#fff", "A"], "Cartão Aurora": ["#0A7C66", "#fff", "aurora"], "Corretora": ["#FF7A00", "#fff", "in"], "Conta Global": ["#0075EB", "#fff", "R"] };
+const MARCAS = { "Santander": ["#EC0000", "#fff", "S"], "Nubank": ["#8A05BE", "#fff", "nu"], "Cartão Nubank": ["#8A05BE", "#fff", "nu"], "Inter": ["#FF7A00", "#fff", "in"], "Conta Global": ["#0A7C66", "#fff", "G"] };
 function logo(nome) {
   const [bg, fg, txt] = MARCAS[nome] || ["#101A5C", "#fff", (nome || "?")[0]];
   return '<span class="logo-banco" style="background:' + bg + ";color:" + fg + '" aria-hidden="true">' + esc(txt) + "</span>";
@@ -1350,7 +1404,7 @@ function renderBancos() {
   const ignorados = Object.values(ci.outros_cartoes_ignorados || {}).reduce((s, n) => s + n, 0);
   const confere = Math.abs(ci.minha_parte + ci.a_receber + (ci.terceiros || 0) - ci.fatura_bruta) < 0.01;
   const completa = ci.conferencia_fatura ? ci.conferencia_fatura.completa : null;
-  $("cartao").innerHTML = '<div class="card" style="--cor: var(--laranja)"><div class="titulo">' + logo("Cartão Aurora") + 'Cartão Aurora <span class="chip">final ' + esc((ci.finais_usuario || []).join(", ") || "?") + "</span></div>"
+  $("cartao").innerHTML = '<div class="card" style="--cor: var(--laranja)"><div class="titulo">' + logo("Cartão Nubank") + 'Cartão Nubank <span class="chip">final ' + esc((ci.finais_usuario || []).join(", ") || "?") + "</span></div>"
     + (ci.conectado
       ? '<div class="big">' + brl(ci.fatura_bruta) + '</div><div class="det">Fatura com vencimento em ' + dataBr(ci.vencimento) + " · " + ci.compras + " lançamentos. Não é saldo: é o que você deve ao banco.</div>"
         + '<div class="kv" style="margin-top:10px"><span>Seus gastos</span><span>' + brl(ci.minha_parte) + "</span></div>"
@@ -1358,7 +1412,7 @@ function renderBancos() {
         + (ci.terceiros ? '<div class="kv"><span>Pago para outras pessoas</span><span>' + brl(ci.terceiros) + "</span></div>" : "")
         + '<div class="kv"><span>Soma</span><span class="status ' + (confere ? "bom" : "ruim") + '">' + (confere ? "✓ fecha com a fatura" : "✕ não fecha") + "</span></div>"
         + (completa !== null ? '<div class="kv"><span>Dados do cartão</span><span class="status ' + (completa ? "bom" : "ruim") + '">' + (completa ? "✓ completos" : "✕ incompletos") + "</span></div>" : "")
-        + '<div class="det">Cartão da Bia (titular). Só entram compras do seu final; ' + ignorados + " lançamentos de outros cartões foram ignorados." + (completa ? " A fatura inteira bate com o total oficial do Banco Aurora (" + brl(ci.conferencia_fatura.oficial) + ")." : "") + "</div>"
+        + '<div class="det">Cartão da Bia (titular). Só entram compras do seu final; ' + ignorados + " lançamentos de outros cartões foram ignorados." + (completa ? " A fatura inteira bate com o total oficial do Nubank (" + brl(ci.conferencia_fatura.oficial) + ")." : "") + "</div>"
       : '<div class="big" style="color:var(--apagado)">Não conectado</div>') + "</div>";
 }
 
@@ -1367,7 +1421,7 @@ function renderTabela() {
   const gastosV = P.movimentacoes.filter(l => l.grupo === "gasto" && l.categoria !== "Dúvida"), entradasV = P.movimentacoes.filter(l => l.grupo === "receita" && l.categoria !== "Dúvida");
   // Os rendimentos diários da reserva entram em Entradas como uma linha só (o total bate com o card do topo)
   const rendL = P.movimentacoes.filter(l => l.grupo === "rendimento");
-  if (rendL.length) entradasV.push({ id: "rend-agg", data: rendL[rendL.length - 1].data, descricao: "Rendimentos da reserva (" + rendL.length + " dias)", categoria: "Rendimentos", conta: "Pay Verde", modalidade: "CDI", tipo: "Eventual", valor: rendL.reduce((a, l) => a + l.valor, 0), grupo: "receita", nota: "Somados do mês. Cada dia aparece em Tudo" });
+  if (rendL.length) entradasV.push({ id: "rend-agg", data: rendL[rendL.length - 1].data, descricao: "Rendimentos da reserva (" + rendL.length + " dias)", categoria: "Rendimentos", conta: "Nubank", modalidade: "CDI", tipo: "Eventual", valor: rendL.reduce((a, l) => a + l.valor, 0), grupo: "receita", nota: "Somados do mês. Cada dia aparece em Tudo" });
   const lado = filtro === "gasto" || filtro === "principais" ? "saidas" : filtro === "receita" ? "entradas" : "";
   $("movimentacoes").dataset.lado = lado;
   $("lados").innerHTML = '<button class="lado saidas' + (lado === "saidas" ? " ativo" : "") + '" data-f="gasto"><span>Saídas</span><b>' + brl(gastosV.reduce((s, l) => s + l.valor, 0)) + "</b><small>" + gastosV.length + " lançamentos</small></button>"
@@ -1463,7 +1517,7 @@ async function iniciar() {
   const hojeMes = HOJE.slice(0, 7);
   const inicial = MESES_DISP.find(m => m <= hojeMes) || MESES_DISP[0];
   if (MESES_DISP.length) await irPara(MESES_DISP.includes(salvo) && salvo <= hojeMes ? salvo : inicial);
-  blurAoRolar(); siglasDeFundo(); moedasCaindo(); 
+  blurAoRolar(); siglasDeFundo(); moedasCaindo(); personagens();
   let rz = null; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(siglasDeFundo, 300); });
 }
 

@@ -11,7 +11,8 @@ DADOS = Path(__file__).parent / "dados"
 MESES = ["2026-08", "2026-09", "2026-10", "2026-11"]
 HOJE = "2026-10-21"
 BIA = "Bia"
-CONTA, PAY, FLEX, GLOBAL, CARTAO = "Banco Aurora", "Pay Verde", "Benefício Flex", "Conta Global", "Cartão Aurora"
+CONTA, PAY, INTER, GLOBAL, CARTAO = "Santander", "Nubank", "Inter", "Conta Global", "Cartão Nubank"
+FLEX = CONTA   # o benefício cai na conta do salário
 TAG = "viagem lisboa"
 METAS = {"renda_propria_base": 6000, "gasto_total": 5600, "gasto_fixo": 2800, "gasto_variavel": 2800, "guardar": 600}
 ORIGEM = "Dados fictícios de demonstração. Renda própria de R$ 6.000 (sem contar ajuda da família): gastos até R$ 5.600 (fixos até R$ 2.800 e variáveis até R$ 2.800) e investir pelo menos R$ 600 (10%). Ajustáveis"
@@ -53,7 +54,7 @@ def construir(mes, k):
         m.linha(5, "Salário", CONTA, "Salário", "Fixo", 5200, "receita", "Salário", "EMPRESA EXEMPLO LTDA SALARIO")
         m.linha(1, "Benefício Flex", FLEX, "Benefício", "Fixo", 700, "receita", "Benefício Flex", "BENEFICIO FLEX CREDITO")
         extra = {"2026-08": 800, "2026-09": 1200, "2026-10": 950}[mes]
-        m.linha(12, "Cliente: site da padaria", PAY, "PIX", "Eventual", extra, "receita", "Trabalho extra (sites)", "PIX RECEBIDO")
+        m.linha(12, "Cliente: site da padaria", INTER, "PIX", "Eventual", extra, "receita", "Trabalho extra (sites)", "PIX RECEBIDO")
         ajuda = {"2026-08": 1500, "2026-09": 1000, "2026-10": 800}[mes]
         m.linha(8, "Ajuda da família", PAY, "PIX", "Eventual", ajuda, "receita", "Ajuda da família", "PIX RECEBIDO")
         if mes == "2026-09":
@@ -157,14 +158,15 @@ def montar(mes, k):
     bruta = r2(-sum(l.get("bruto", l["valor"]) for l in cartao) + sum(x["valor"] for x in terceiros))
     ult = {"2026-08": "08", "2026-09": "09", "2026-10": "10", "2026-11": "11"}[mes]
     contas = [{"nome": CONTA, "tipo": "BANK", "saldo": 1284.5, "atualizado_em": HOJE}, {"nome": PAY, "tipo": "BANK", "saldo": 5680.0, "atualizado_em": HOJE},
-              {"nome": FLEX, "tipo": "BENEFIT", "saldo": 312.4, "atualizado_em": HOJE},
+              {"nome": INTER, "tipo": "BANK", "saldo": 3150.0, "atualizado_em": HOJE},
               {"nome": GLOBAL, "tipo": "MANUAL", "saldo": 640.0, "atualizado_em": HOJE, "nota": "Convertendo em euro para a viagem (informado por você)"}]
     datas = ["2026-07-31", "2026-08-31", "2026-09-30", "2026-10-20", "2026-10-21"]
-    ativos = [("Reserva Pay Verde (CDI)", "CDI", PAY, None, 5000.0, 41.2, True, [4700, 4760, 4880, 5000, 5000]),
-              ("CDB Corretora (4 aplicações)", "CDI", "Corretora (automático)", 14500.0, 15640.0, None, True, [14980, 15090, 15440, 15630, 15640]),
-              ("Fundo Renda Fixa Plus", "Fundos de investimento", "Corretora (automático)", 4000.0, 4131.0, None, True, [4060, 4075, 4108, 4130, 4131]),
-              ("Bitcoin (0,0030 BTC)", "Cripto", "Corretora", 1500.0, 1390.0, None, False, [1610, 1490, 1620, 1385, 1390]),
-              ("Ações dos EUA (US$ 150)", "Ações EUA", "Corretora Global", None, 820.0, None, False, [760, 790, 805, 818, 820])]
+    # patrimônio de R$ 70.000 em 21/10/2026
+    ativos = [("Reserva Nubank (CDI)", "CDI", PAY, None, 8000.0, 66.4, True, [7300, 7550, 7800, 8000, 8000]),
+              ("CDB Inter (4 aplicações)", "CDI", "Inter (automático)", 33900.0, 36400.0, None, True, [32800, 33900, 35300, 36350, 36400]),
+              ("Fundo Renda Fixa Plus", "Fundos de investimento", "Inter (automático)", 13800.0, 14600.0, None, True, [13700, 13950, 14350, 14590, 14600]),
+              ("Bitcoin (0,0130 BTC)", "Cripto", "Inter", 3800.0, 4150.0, None, False, [4350, 3980, 4420, 4140, 4150]),
+              ("Ações dos EUA (US$ 1.200)", "Ações EUA", "Inter Global", 5900.0, 6850.0, None, False, [5900, 6150, 6480, 6830, 6850])]
     inv = {"teste": False, "aviso": "Valores fictícios de demonstração.", "atualizado_em": "2026-10-20", "caixa": 680.0, "aportes_mes": [],
            "ativos": [{"nome": n, "classe": c, "instituicao": i, "aplicado": ap, "atual": at, "rendimento_mes": rm, "real": True, **({"automatico": True} if au else {})} for n, c, i, ap, at, rm, au, _ in ativos],
            "historico": {n: dict(zip(datas, [float(x) for x in h])) for n, *_, h in ativos}}

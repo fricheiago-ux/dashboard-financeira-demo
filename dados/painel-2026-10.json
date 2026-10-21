@@ -67,21 +67,21 @@
  },
  "contas": [
   {
-   "nome": "Banco Aurora",
+   "nome": "Santander",
    "tipo": "BANK",
    "saldo": 1284.5,
    "atualizado_em": "2026-10-21"
   },
   {
-   "nome": "Pay Verde",
+   "nome": "Nubank",
    "tipo": "BANK",
    "saldo": 5680.0,
    "atualizado_em": "2026-10-21"
   },
   {
-   "nome": "Benefício Flex",
-   "tipo": "BENEFIT",
-   "saldo": 312.4,
+   "nome": "Inter",
+   "tipo": "BANK",
+   "saldo": 3150.0,
    "atualizado_em": "2026-10-21"
   },
   {
@@ -126,21 +126,21 @@
   "aportes_mes": [],
   "ativos": [
    {
-    "nome": "Reserva Pay Verde (CDI)",
+    "nome": "Reserva Nubank (CDI)",
     "classe": "CDI",
-    "instituicao": "Pay Verde",
+    "instituicao": "Nubank",
     "aplicado": null,
-    "atual": 5000.0,
-    "rendimento_mes": 41.2,
+    "atual": 8000.0,
+    "rendimento_mes": 66.4,
     "real": true,
     "automatico": true
    },
    {
-    "nome": "CDB Corretora (4 aplicações)",
+    "nome": "CDB Inter (4 aplicações)",
     "classe": "CDI",
-    "instituicao": "Corretora (automático)",
-    "aplicado": 14500.0,
-    "atual": 15640.0,
+    "instituicao": "Inter (automático)",
+    "aplicado": 33900.0,
+    "atual": 36400.0,
     "rendimento_mes": null,
     "real": true,
     "automatico": true
@@ -148,67 +148,67 @@
    {
     "nome": "Fundo Renda Fixa Plus",
     "classe": "Fundos de investimento",
-    "instituicao": "Corretora (automático)",
-    "aplicado": 4000.0,
-    "atual": 4131.0,
+    "instituicao": "Inter (automático)",
+    "aplicado": 13800.0,
+    "atual": 14600.0,
     "rendimento_mes": null,
     "real": true,
     "automatico": true
    },
    {
-    "nome": "Bitcoin (0,0030 BTC)",
+    "nome": "Bitcoin (0,0130 BTC)",
     "classe": "Cripto",
-    "instituicao": "Corretora",
-    "aplicado": 1500.0,
-    "atual": 1390.0,
+    "instituicao": "Inter",
+    "aplicado": 3800.0,
+    "atual": 4150.0,
     "rendimento_mes": null,
     "real": true
    },
    {
-    "nome": "Ações dos EUA (US$ 150)",
+    "nome": "Ações dos EUA (US$ 1.200)",
     "classe": "Ações EUA",
-    "instituicao": "Corretora Global",
-    "aplicado": null,
-    "atual": 820.0,
+    "instituicao": "Inter Global",
+    "aplicado": 5900.0,
+    "atual": 6850.0,
     "rendimento_mes": null,
     "real": true
    }
   ],
   "historico": {
-   "Reserva Pay Verde (CDI)": {
-    "2026-07-31": 4700.0,
-    "2026-08-31": 4760.0,
-    "2026-09-30": 4880.0,
-    "2026-10-20": 5000.0,
-    "2026-10-21": 5000.0
+   "Reserva Nubank (CDI)": {
+    "2026-07-31": 7300.0,
+    "2026-08-31": 7550.0,
+    "2026-09-30": 7800.0,
+    "2026-10-20": 8000.0,
+    "2026-10-21": 8000.0
    },
-   "CDB Corretora (4 aplicações)": {
-    "2026-07-31": 14980.0,
-    "2026-08-31": 15090.0,
-    "2026-09-30": 15440.0,
-    "2026-10-20": 15630.0,
-    "2026-10-21": 15640.0
+   "CDB Inter (4 aplicações)": {
+    "2026-07-31": 32800.0,
+    "2026-08-31": 33900.0,
+    "2026-09-30": 35300.0,
+    "2026-10-20": 36350.0,
+    "2026-10-21": 36400.0
    },
    "Fundo Renda Fixa Plus": {
-    "2026-07-31": 4060.0,
-    "2026-08-31": 4075.0,
-    "2026-09-30": 4108.0,
-    "2026-10-20": 4130.0,
-    "2026-10-21": 4131.0
+    "2026-07-31": 13700.0,
+    "2026-08-31": 13950.0,
+    "2026-09-30": 14350.0,
+    "2026-10-20": 14590.0,
+    "2026-10-21": 14600.0
    },
-   "Bitcoin (0,0030 BTC)": {
-    "2026-07-31": 1610.0,
-    "2026-08-31": 1490.0,
-    "2026-09-30": 1620.0,
-    "2026-10-20": 1385.0,
-    "2026-10-21": 1390.0
+   "Bitcoin (0,0130 BTC)": {
+    "2026-07-31": 4350.0,
+    "2026-08-31": 3980.0,
+    "2026-09-30": 4420.0,
+    "2026-10-20": 4140.0,
+    "2026-10-21": 4150.0
    },
-   "Ações dos EUA (US$ 150)": {
-    "2026-07-31": 760.0,
-    "2026-08-31": 790.0,
-    "2026-09-30": 805.0,
-    "2026-10-20": 818.0,
-    "2026-10-21": 820.0
+   "Ações dos EUA (US$ 1.200)": {
+    "2026-07-31": 5900.0,
+    "2026-08-31": 6150.0,
+    "2026-09-30": 6480.0,
+    "2026-10-20": 6830.0,
+    "2026-10-21": 6850.0
    }
   }
  },
@@ -217,7 +217,7 @@
    {
     "id": "demo-2026-10-025",
     "data": "2026-10-13",
-    "conta": "Cartão Aurora",
+    "conta": "Cartão Nubank",
     "valor": -203.09,
     "modalidade": "Crédito",
     "tipo": "Variável",
@@ -232,7 +232,7 @@
    {
     "id": "demo-2026-10-026",
     "data": "2026-10-23",
-    "conta": "Cartão Aurora",
+    "conta": "Cartão Nubank",
     "valor": -219.19,
     "modalidade": "Crédito",
     "tipo": "Variável",
@@ -247,7 +247,7 @@
    {
     "id": "demo-2026-10-027",
     "data": "2026-10-17",
-    "conta": "Cartão Aurora",
+    "conta": "Cartão Nubank",
     "valor": -198.57,
     "modalidade": "Crédito",
     "tipo": "Variável",
@@ -262,7 +262,7 @@
    {
     "id": "demo-2026-10-028",
     "data": "2026-10-08",
-    "conta": "Cartão Aurora",
+    "conta": "Cartão Nubank",
     "valor": -189.11,
     "modalidade": "Crédito",
     "tipo": "Variável",
@@ -289,7 +289,7 @@
    {
     "id": "demo-2026-10-057",
     "data": "2026-10-08",
-    "conta": "Pay Verde",
+    "conta": "Nubank",
     "valor": -98.6,
     "modalidade": "PIX",
     "tipo": "",
@@ -304,7 +304,7 @@
    {
     "id": "demo-2026-10-058",
     "data": "2026-10-22",
-    "conta": "Cartão Aurora",
+    "conta": "Cartão Nubank",
     "valor": 105.0,
     "modalidade": "Crédito",
     "tipo": "",
@@ -322,7 +322,7 @@
   {
    "id": "demo-2026-10-001",
    "data": "2026-10-05",
-   "conta": "Banco Aurora",
+   "conta": "Santander",
    "valor": 5200.0,
    "modalidade": "Salário",
    "tipo": "Fixo",
@@ -336,7 +336,7 @@
   {
    "id": "demo-2026-10-002",
    "data": "2026-10-01",
-   "conta": "Benefício Flex",
+   "conta": "Santander",
    "valor": 700.0,
    "modalidade": "Benefício",
    "tipo": "Fixo",
@@ -350,7 +350,7 @@
   {
    "id": "demo-2026-10-003",
    "data": "2026-10-12",
-   "conta": "Pay Verde",
+   "conta": "Inter",
    "valor": 950.0,
    "modalidade": "PIX",
    "tipo": "Eventual",
@@ -364,7 +364,7 @@
   {
    "id": "demo-2026-10-004",
    "data": "2026-10-08",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": 800.0,
    "modalidade": "PIX",
    "tipo": "Eventual",
@@ -378,7 +378,7 @@
   {
    "id": "demo-2026-10-005",
    "data": "2026-10-02",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": 3.76,
    "modalidade": "CDI",
    "tipo": "Eventual",
@@ -392,7 +392,7 @@
   {
    "id": "demo-2026-10-006",
    "data": "2026-10-04",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": 4.88,
    "modalidade": "CDI",
    "tipo": "Eventual",
@@ -406,7 +406,7 @@
   {
    "id": "demo-2026-10-007",
    "data": "2026-10-06",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": 3.81,
    "modalidade": "CDI",
    "tipo": "Eventual",
@@ -420,7 +420,7 @@
   {
    "id": "demo-2026-10-008",
    "data": "2026-10-08",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": 5.11,
    "modalidade": "CDI",
    "tipo": "Eventual",
@@ -434,7 +434,7 @@
   {
    "id": "demo-2026-10-009",
    "data": "2026-10-10",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": 4.86,
    "modalidade": "CDI",
    "tipo": "Eventual",
@@ -448,7 +448,7 @@
   {
    "id": "demo-2026-10-010",
    "data": "2026-10-12",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": 4.32,
    "modalidade": "CDI",
    "tipo": "Eventual",
@@ -462,7 +462,7 @@
   {
    "id": "demo-2026-10-011",
    "data": "2026-10-14",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": 4.88,
    "modalidade": "CDI",
    "tipo": "Eventual",
@@ -476,7 +476,7 @@
   {
    "id": "demo-2026-10-012",
    "data": "2026-10-16",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": 4.76,
    "modalidade": "CDI",
    "tipo": "Eventual",
@@ -490,7 +490,7 @@
   {
    "id": "demo-2026-10-013",
    "data": "2026-10-18",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": 3.5,
    "modalidade": "CDI",
    "tipo": "Eventual",
@@ -504,7 +504,7 @@
   {
    "id": "demo-2026-10-014",
    "data": "2026-10-20",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": 4.67,
    "modalidade": "CDI",
    "tipo": "Eventual",
@@ -518,7 +518,7 @@
   {
    "id": "demo-2026-10-015",
    "data": "2026-10-14",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": -300.0,
    "modalidade": "PIX",
    "tipo": "",
@@ -533,7 +533,7 @@
   {
    "id": "demo-2026-10-016",
    "data": "2026-10-15",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": 460.0,
    "modalidade": "PIX",
    "tipo": "",
@@ -548,7 +548,7 @@
   {
    "id": "demo-2026-10-017",
    "data": "2026-10-06",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": -1200.0,
    "modalidade": "Boleto",
    "tipo": "Fixo",
@@ -566,7 +566,7 @@
   {
    "id": "demo-2026-10-018",
    "data": "2026-10-08",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": -260.0,
    "modalidade": "Boleto",
    "tipo": "Fixo",
@@ -584,7 +584,7 @@
   {
    "id": "demo-2026-10-019",
    "data": "2026-10-15",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": -97.39,
    "modalidade": "Boleto",
    "tipo": "Fixo",
@@ -602,7 +602,7 @@
   {
    "id": "demo-2026-10-020",
    "data": "2026-10-17",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": -59.95,
    "modalidade": "Boleto",
    "tipo": "Fixo",
@@ -620,7 +620,7 @@
   {
    "id": "demo-2026-10-021",
    "data": "2026-10-10",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -69.9,
    "modalidade": "Crédito",
    "tipo": "Fixo",
@@ -634,7 +634,7 @@
   {
    "id": "demo-2026-10-022",
    "data": "2026-10-11",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -39.9,
    "modalidade": "Crédito",
    "tipo": "Fixo",
@@ -648,7 +648,7 @@
   {
    "id": "demo-2026-10-023",
    "data": "2026-10-11",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -21.9,
    "modalidade": "Crédito",
    "tipo": "Fixo",
@@ -662,7 +662,7 @@
   {
    "id": "demo-2026-10-024",
    "data": "2026-10-05",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -119.9,
    "modalidade": "Crédito",
    "tipo": "Fixo",
@@ -676,7 +676,7 @@
   {
    "id": "demo-2026-10-025",
    "data": "2026-10-13",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -203.09,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -691,7 +691,7 @@
   {
    "id": "demo-2026-10-026",
    "data": "2026-10-23",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -219.19,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -706,7 +706,7 @@
   {
    "id": "demo-2026-10-027",
    "data": "2026-10-17",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -198.57,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -721,7 +721,7 @@
   {
    "id": "demo-2026-10-028",
    "data": "2026-10-08",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -189.11,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -736,7 +736,7 @@
   {
    "id": "demo-2026-10-029",
    "data": "2026-10-17",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -192.84,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -750,7 +750,7 @@
   {
    "id": "demo-2026-10-030",
    "data": "2026-10-26",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -36.84,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -768,7 +768,7 @@
   {
    "id": "demo-2026-10-031",
    "data": "2026-10-14",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -115.03,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -782,7 +782,7 @@
   {
    "id": "demo-2026-10-032",
    "data": "2026-10-21",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -138.66,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -796,7 +796,7 @@
   {
    "id": "demo-2026-10-033",
    "data": "2026-10-28",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -72.25,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -814,7 +814,7 @@
   {
    "id": "demo-2026-10-034",
    "data": "2026-10-20",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -128.65,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -828,7 +828,7 @@
   {
    "id": "demo-2026-10-035",
    "data": "2026-10-12",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -51.55,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -846,7 +846,7 @@
   {
    "id": "demo-2026-10-036",
    "data": "2026-10-06",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -69.54,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -860,7 +860,7 @@
   {
    "id": "demo-2026-10-037",
    "data": "2026-10-14",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -59.96,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -874,7 +874,7 @@
   {
    "id": "demo-2026-10-038",
    "data": "2026-10-07",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -20.93,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -892,7 +892,7 @@
   {
    "id": "demo-2026-10-039",
    "data": "2026-10-20",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -29.61,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -910,7 +910,7 @@
   {
    "id": "demo-2026-10-040",
    "data": "2026-10-09",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -36.91,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -928,7 +928,7 @@
   {
    "id": "demo-2026-10-041",
    "data": "2026-10-05",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -14.1,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -942,7 +942,7 @@
   {
    "id": "demo-2026-10-042",
    "data": "2026-10-09",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -21.63,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -956,7 +956,7 @@
   {
    "id": "demo-2026-10-043",
    "data": "2026-10-24",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -24.69,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -970,7 +970,7 @@
   {
    "id": "demo-2026-10-044",
    "data": "2026-10-24",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -19.84,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -984,7 +984,7 @@
   {
    "id": "demo-2026-10-045",
    "data": "2026-10-07",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -30.46,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -998,7 +998,7 @@
   {
    "id": "demo-2026-10-046",
    "data": "2026-10-27",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -31.84,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -1012,7 +1012,7 @@
   {
    "id": "demo-2026-10-047",
    "data": "2026-10-07",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -14.54,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -1026,7 +1026,7 @@
   {
    "id": "demo-2026-10-048",
    "data": "2026-10-09",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -177.5,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -1040,7 +1040,7 @@
   {
    "id": "demo-2026-10-049",
    "data": "2026-10-19",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -71.25,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -1058,7 +1058,7 @@
   {
    "id": "demo-2026-10-050",
    "data": "2026-10-21",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -86.92,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -1072,7 +1072,7 @@
   {
    "id": "demo-2026-10-051",
    "data": "2026-10-23",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": -55.0,
    "modalidade": "PIX",
    "tipo": "Variável",
@@ -1086,7 +1086,7 @@
   {
    "id": "demo-2026-10-052",
    "data": "2026-10-03",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -189.9,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -1100,7 +1100,7 @@
   {
    "id": "demo-2026-10-053",
    "data": "2026-10-18",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -137.61,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -1114,7 +1114,7 @@
   {
    "id": "demo-2026-10-054",
    "data": "2026-10-02",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -410.0,
    "modalidade": "Crédito",
    "tipo": "Variável",
@@ -1130,7 +1130,7 @@
   {
    "id": "demo-2026-10-055",
    "data": "2026-10-07",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": -232.0,
    "modalidade": "PIX",
    "tipo": "Variável",
@@ -1163,7 +1163,7 @@
   {
    "id": "demo-2026-10-057",
    "data": "2026-10-08",
-   "conta": "Pay Verde",
+   "conta": "Nubank",
    "valor": -98.6,
    "modalidade": "PIX",
    "tipo": "",
@@ -1178,7 +1178,7 @@
   {
    "id": "demo-2026-10-058",
    "data": "2026-10-22",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": 105.0,
    "modalidade": "Crédito",
    "tipo": "",
@@ -1193,7 +1193,7 @@
   {
    "id": "demo-2026-10-059",
    "data": "2026-10-11",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -149.99,
    "modalidade": "Crédito",
    "tipo": "",
@@ -1208,7 +1208,7 @@
   {
    "id": "demo-2026-10-060",
    "data": "2026-10-11",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -149.99,
    "modalidade": "Crédito",
    "tipo": "",
@@ -1223,7 +1223,7 @@
   {
    "id": "demo-2026-10-061",
    "data": "2026-10-11",
-   "conta": "Cartão Aurora",
+   "conta": "Cartão Nubank",
    "valor": -180.63,
    "modalidade": "Crédito",
    "tipo": "",
