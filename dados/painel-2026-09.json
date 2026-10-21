@@ -30,9 +30,9 @@
   "duvida_entrada": 105.0,
   "a_receber_terceiros": 180.63,
   "receitas_total": 8346.5,
-  "ajuda_familia": 1200.0,
-  "renda_propria": 7146.5,
-  "sobra_sem_ajuda": 2745.85,
+  "ajuda_familia": 200.0,
+  "renda_propria": 8146.5,
+  "sobra_sem_ajuda": 3745.85,
   "movimentado": 6824.73,
   "balanco": 3945.85,
   "viagem_tag": 410.0,
@@ -62,7 +62,7 @@
  "receitas_por_categoria": {
   "Salário": 5200.0,
   "Trabalho extra (sites)": 1200.0,
-  "Ajuda da família": 1000.0,
+  "Venda notebook": 1000.0,
   "Benefício Flex": 700.0,
   "Presente da família": 200.0
  },
@@ -407,12 +407,12 @@
    "valor": 1000.0,
    "modalidade": "PIX",
    "tipo": "Eventual",
-   "nome_original": "PIX RECEBIDO",
+   "nome_original": "PIX RECEBIDO COMPRADOR",
    "ids_extras": [],
    "tags": [],
-   "descricao": "Ajuda da família",
+   "descricao": "Venda do notebook",
    "grupo": "receita",
-   "categoria": "Ajuda da família"
+   "categoria": "Venda notebook"
   },
   {
    "id": "demo-2026-09-005",

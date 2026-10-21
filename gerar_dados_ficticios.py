@@ -56,7 +56,7 @@ def construir(mes, k):
         extra = {"2026-08": 800, "2026-09": 1200, "2026-10": 950}[mes]
         m.linha(12, "Cliente: site da padaria", INTER, "PIX", "Eventual", extra, "receita", "Trabalho extra (sites)", "PIX RECEBIDO")
         ajuda = {"2026-08": 1500, "2026-09": 1000, "2026-10": 800}[mes]
-        m.linha(8, "Ajuda da família", PAY, "PIX", "Eventual", ajuda, "receita", "Ajuda da família", "PIX RECEBIDO")
+        m.linha(8, "Venda do notebook", PAY, "PIX", "Eventual", ajuda, "receita", "Venda notebook", "PIX RECEBIDO COMPRADOR")
         if mes == "2026-09":
             m.linha(20, "Presente da família", PAY, "PIX", "Eventual", 200, "receita", "Presente da família", "PIX RECEBIDO")
         for d in range(1, 11):
