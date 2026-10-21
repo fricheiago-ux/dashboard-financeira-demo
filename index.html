@@ -426,6 +426,7 @@
   #card-viagem .viagem-texto { min-width: 0; align-self: center; }
   #card-viagem .viagem-foto { width: 100%; height: 100%; min-height: 190px; object-fit: cover; border-radius: 14px; display: block; }
   @media (max-width: 640px) { #card-viagem { grid-template-columns: 1fr; } #card-viagem .viagem-foto { order: -1; min-height: 150px; max-height: 190px; } }
+  .logo-img { padding: 0; object-fit: cover; width: 26px; height: 26px; }
   .demo-faixa { margin: 0 0 14px; padding: 9px 14px; border-radius: 12px; background: var(--ouro-texto); color: #fff; font-size: 12.5px; font-weight: 700; text-align: center; }
   /* Visual do design system (20/10/2026): siglas manuscritas ao fundo, moedas caindo, capivara e notas no topo, blur ao rolar */
   #decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
@@ -1378,8 +1379,10 @@ function fecharTarefa() {
 }
 
 // Miniaturas de marca desenhadas aqui (letra em cor do banco): sem baixar logos de terceiros
-const MARCAS = { "Santander": ["#EC0000", "#fff", "S"], "Nubank": ["#8A05BE", "#fff", "nu"], "Cartão Nubank": ["#8A05BE", "#fff", "nu"], "Inter": ["#FF7A00", "#fff", "in"], "Conta Global": ["#0A7C66", "#fff", "G"] };
+const MARCAS = { "Santander": ["#EC0000", "#fff", "S"], "Nubank": ["#8A05BE", "#fff", "nu"], "Cartão Nubank": ["#8A05BE", "#fff", "nu"], "Inter": ["#FF7A00", "#fff", "in"], "Revolut": ["#3F4390", "#fff", "R"] };
+const LOGOS_IMG = { "Santander": "imagens/logo-santander.png", "Revolut": "imagens/logo-revolut.png" };
 function logo(nome) {
+  if (LOGOS_IMG[nome]) return '<img class="logo-banco logo-img" src="' + LOGOS_IMG[nome] + '" alt="" width="26" height="26">';
   const [bg, fg, txt] = MARCAS[nome] || ["#101A5C", "#fff", (nome || "?")[0]];
   return '<span class="logo-banco" style="background:' + bg + ";color:" + fg + '" aria-hidden="true">' + esc(txt) + "</span>";
 }
@@ -1472,9 +1475,9 @@ function renderTabela() {
 
 function renderViagem() {
   const total = RESUMO.reduce((a, r) => a + (r.totais.viagem_tag || 0), 0), n = RESUMO.reduce((a, r) => a + (r.totais.viagem_tag_n || 0), 0);
-  const rev = (P.contas || []).find(c => c.nome === "Conta Global");
+  const rev = (P.contas || []).find(c => c.nome === "Revolut");
   contar($("viagem-total"), total);
-  $("viagem-det").innerHTML = "Sua parte, somando todos os meses · " + n + " lançamentos com a tag" + (rev ? '<br>Guardado no Conta Global para a viagem: <b class="sensivel-saldo">' + brl(rev.saldo) + "</b>" : "")
+  $("viagem-det").innerHTML = "Sua parte, somando todos os meses · " + n + " lançamentos com a tag" + (rev ? '<br>Guardado no Revolut para a viagem: <b class="sensivel-saldo">' + brl(rev.saldo) + "</b>" : "")
     + '<br><span style="color:var(--apagado)">Para entrar aqui, o gasto precisa ter a tag. Me avise o que é da viagem.</span>';
 }
 
