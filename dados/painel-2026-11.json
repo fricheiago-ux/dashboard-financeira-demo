@@ -1,0 +1,534 @@
+{
+ "mes": "2026-11",
+ "gerado_em": "2026-10-21",
+ "metas": {
+  "renda_propria_base": 6000,
+  "gasto_total": 5600,
+  "gasto_fixo": 2800,
+  "gasto_variavel": 2800,
+  "guardar": 600
+ },
+ "metas_origem": "Dados fictícios de demonstração. Renda própria de R$ 6.000 (sem contar ajuda da família): gastos até R$ 5.600 (fixos até R$ 2.800 e variáveis até R$ 2.800) e investir pelo menos R$ 600 (10%). Ajustáveis",
+ "reserva_emergencia": {
+  "meses_de_cobertura": 5,
+  "meses_na_media": 3,
+  "classes": [
+   "CDI"
+  ]
+ },
+ "totais": {
+  "receita_fixa": 0.0,
+  "receita_eventual": 0.0,
+  "rendimentos": 0.0,
+  "gasto_total": 1870.48,
+  "gasto_fixo": 0.0,
+  "gasto_variavel": 1870.48,
+  "a_receber_mes": 486.06,
+  "a_pagar_mes": 0.0,
+  "a_receber_outros_mes": 0,
+  "duvida_saida": -0.0,
+  "duvida_entrada": 0.0,
+  "a_receber_terceiros": 0.0,
+  "receitas_total": 0.0,
+  "ajuda_familia": 0.0,
+  "renda_propria": 0.0,
+  "sobra_sem_ajuda": -1870.48,
+  "movimentado": 2356.54,
+  "balanco": -1870.48,
+  "viagem_tag": 410.0,
+  "viagem_tag_n": 1
+ },
+ "splitwise_saldos": {
+  "Bia": 214.5
+ },
+ "por_categoria": {
+  "Viagem": 410.0,
+  "Mercado": 359.75,
+  "Transporte": 302.62,
+  "Compras": 189.9,
+  "Rolês": 187.02,
+  "Restaurantes": 103.76,
+  "Delivery": 101.92,
+  "Drogaria": 89.26,
+  "Pet": 71.25,
+  "Estética e higiene": 55.0
+ },
+ "receitas_por_categoria": {},
+ "contas": [
+  {
+   "nome": "Banco Aurora",
+   "tipo": "BANK",
+   "saldo": 1284.5,
+   "atualizado_em": "2026-10-21"
+  },
+  {
+   "nome": "Pay Verde",
+   "tipo": "BANK",
+   "saldo": 5680.0,
+   "atualizado_em": "2026-10-21"
+  },
+  {
+   "nome": "Benefício Flex",
+   "tipo": "BENEFIT",
+   "saldo": 312.4,
+   "atualizado_em": "2026-10-21"
+  },
+  {
+   "nome": "Conta Global",
+   "tipo": "MANUAL",
+   "saldo": 640.0,
+   "atualizado_em": "2026-10-21",
+   "nota": "Convertendo em euro para a viagem (informado por você)"
+  }
+ ],
+ "terceiros": [],
+ "investimentos": {
+  "teste": false,
+  "aviso": "Valores fictícios de demonstração.",
+  "atualizado_em": "2026-10-20",
+  "caixa": 680.0,
+  "aportes_mes": [],
+  "ativos": [
+   {
+    "nome": "Reserva Pay Verde (CDI)",
+    "classe": "CDI",
+    "instituicao": "Pay Verde",
+    "aplicado": null,
+    "atual": 5000.0,
+    "rendimento_mes": 41.2,
+    "real": true,
+    "automatico": true
+   },
+   {
+    "nome": "CDB Corretora (4 aplicações)",
+    "classe": "CDI",
+    "instituicao": "Corretora (automático)",
+    "aplicado": 14500.0,
+    "atual": 15640.0,
+    "rendimento_mes": null,
+    "real": true,
+    "automatico": true
+   },
+   {
+    "nome": "Fundo Renda Fixa Plus",
+    "classe": "Fundos de investimento",
+    "instituicao": "Corretora (automático)",
+    "aplicado": 4000.0,
+    "atual": 4131.0,
+    "rendimento_mes": null,
+    "real": true,
+    "automatico": true
+   },
+   {
+    "nome": "Bitcoin (0,0030 BTC)",
+    "classe": "Cripto",
+    "instituicao": "Corretora",
+    "aplicado": 1500.0,
+    "atual": 1390.0,
+    "rendimento_mes": null,
+    "real": true
+   },
+   {
+    "nome": "Ações dos EUA (US$ 150)",
+    "classe": "Ações EUA",
+    "instituicao": "Corretora Global",
+    "aplicado": null,
+    "atual": 820.0,
+    "rendimento_mes": null,
+    "real": true
+   }
+  ],
+  "historico": {
+   "Reserva Pay Verde (CDI)": {
+    "2026-07-31": 4700.0,
+    "2026-08-31": 4760.0,
+    "2026-09-30": 4880.0,
+    "2026-10-20": 5000.0,
+    "2026-10-21": 5000.0
+   },
+   "CDB Corretora (4 aplicações)": {
+    "2026-07-31": 14980.0,
+    "2026-08-31": 15090.0,
+    "2026-09-30": 15440.0,
+    "2026-10-20": 15630.0,
+    "2026-10-21": 15640.0
+   },
+   "Fundo Renda Fixa Plus": {
+    "2026-07-31": 4060.0,
+    "2026-08-31": 4075.0,
+    "2026-09-30": 4108.0,
+    "2026-10-20": 4130.0,
+    "2026-10-21": 4131.0
+   },
+   "Bitcoin (0,0030 BTC)": {
+    "2026-07-31": 1610.0,
+    "2026-08-31": 1490.0,
+    "2026-09-30": 1620.0,
+    "2026-10-20": 1385.0,
+    "2026-10-21": 1390.0
+   },
+   "Ações dos EUA (US$ 150)": {
+    "2026-07-31": 760.0,
+    "2026-08-31": 790.0,
+    "2026-09-30": 805.0,
+    "2026-10-20": 818.0,
+    "2026-10-21": 820.0
+   }
+  }
+ },
+ "pendentes": {
+  "falta_no_splitwise": [
+   {
+    "id": "demo-2026-11-004",
+    "data": "2026-11-04",
+    "conta": "Cartão Aurora",
+    "valor": -43.38,
+    "modalidade": "Crédito",
+    "tipo": "Variável",
+    "nome_original": "CANTINA BELLA MASSA SAO PAULO BRA",
+    "ids_extras": [],
+    "tags": [],
+    "descricao": "Cantina Bella Massa",
+    "grupo": "gasto",
+    "categoria": "Restaurantes",
+    "nota": "Parece dividido e não está no Splitwise"
+   },
+   {
+    "id": "demo-2026-11-005",
+    "data": "2026-11-14",
+    "conta": "Pay Verde",
+    "valor": -60.38,
+    "modalidade": "Crédito",
+    "tipo": "Variável",
+    "nome_original": "HAMBURGUERIA BRASA SAO PAULO BRA",
+    "ids_extras": [],
+    "tags": [],
+    "descricao": "Hamburgueria Brasa",
+    "grupo": "gasto",
+    "categoria": "Restaurantes",
+    "nota": "Parece dividido e não está no Splitwise"
+   }
+  ],
+  "sem_par_no_banco": [],
+  "duvidas": []
+ },
+ "movimentacoes": [
+  {
+   "id": "demo-2026-11-001",
+   "data": "2026-11-23",
+   "conta": "Cartão Aurora",
+   "valor": -122.92,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "HORTIFRUTI VERDE SAO PAULO BRA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Hortifruti Verde",
+   "grupo": "gasto",
+   "categoria": "Mercado",
+   "bruto": -245.85,
+   "a_receber": 122.92,
+   "splitwise": true,
+   "nota": "R$ 245,85 no banco, dividido com Bia, Sua parte R$ 122,92, a receber R$ 122,92"
+  },
+  {
+   "id": "demo-2026-11-002",
+   "data": "2026-11-24",
+   "conta": "Cartão Aurora",
+   "valor": -120.58,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "MERCADO BOM PREÇO SAO PAULO BRA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Mercado Bom Preço",
+   "grupo": "gasto",
+   "categoria": "Mercado",
+   "bruto": -241.16,
+   "a_receber": 120.58,
+   "splitwise": true,
+   "nota": "R$ 241,16 no banco, dividido com Bia, Sua parte R$ 120,58, a receber R$ 120,58"
+  },
+  {
+   "id": "demo-2026-11-003",
+   "data": "2026-11-04",
+   "conta": "Cartão Aurora",
+   "valor": -116.25,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "MERCADINHO DA ESQUINA SAO PAULO BRA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Mercadinho da Esquina",
+   "grupo": "gasto",
+   "categoria": "Mercado",
+   "bruto": -232.51,
+   "a_receber": 116.25,
+   "splitwise": true,
+   "nota": "R$ 232,51 no banco, dividido com Bia, Sua parte R$ 116,25, a receber R$ 116,25"
+  },
+  {
+   "id": "demo-2026-11-004",
+   "data": "2026-11-04",
+   "conta": "Cartão Aurora",
+   "valor": -43.38,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "CANTINA BELLA MASSA SAO PAULO BRA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Cantina Bella Massa",
+   "grupo": "gasto",
+   "categoria": "Restaurantes",
+   "nota": "Parece dividido e não está no Splitwise"
+  },
+  {
+   "id": "demo-2026-11-005",
+   "data": "2026-11-14",
+   "conta": "Pay Verde",
+   "valor": -60.38,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "HAMBURGUERIA BRASA SAO PAULO BRA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Hamburgueria Brasa",
+   "grupo": "gasto",
+   "categoria": "Restaurantes",
+   "nota": "Parece dividido e não está no Splitwise"
+  },
+  {
+   "id": "demo-2026-11-006",
+   "data": "2026-11-22",
+   "conta": "Cartão Aurora",
+   "valor": -37.97,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "PIZZA EXPRESS SAO PAULO BRA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Pizza Express",
+   "grupo": "gasto",
+   "categoria": "Delivery"
+  },
+  {
+   "id": "demo-2026-11-007",
+   "data": "2026-11-07",
+   "conta": "Cartão Aurora",
+   "valor": -31.79,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "ENTREGA RÁPIDA SAO PAULO BRA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Entrega Rápida",
+   "grupo": "gasto",
+   "categoria": "Delivery"
+  },
+  {
+   "id": "demo-2026-11-008",
+   "data": "2026-11-23",
+   "conta": "Cartão Aurora",
+   "valor": -32.16,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "PIZZA EXPRESS SAO PAULO BRA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Pizza Express",
+   "grupo": "gasto",
+   "categoria": "Delivery",
+   "bruto": -64.33,
+   "a_receber": 32.16,
+   "splitwise": true,
+   "nota": "R$ 64,33 no banco, dividido com Bia, Sua parte R$ 32,16, a receber R$ 32,16"
+  },
+  {
+   "id": "demo-2026-11-009",
+   "data": "2026-11-15",
+   "conta": "Cartão Aurora",
+   "valor": -164.12,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "SHOW NA ARENA SAO PAULO BRA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Show na Arena",
+   "grupo": "gasto",
+   "categoria": "Rolês"
+  },
+  {
+   "id": "demo-2026-11-010",
+   "data": "2026-11-27",
+   "conta": "Cartão Aurora",
+   "valor": -22.9,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "BAR DO ZÉ SAO PAULO BRA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Bar do Zé",
+   "grupo": "gasto",
+   "categoria": "Rolês",
+   "bruto": -45.8,
+   "a_receber": 22.9,
+   "splitwise": true,
+   "nota": "R$ 45,80 no banco, dividido com Bia, Sua parte R$ 22,90, a receber R$ 22,90"
+  },
+  {
+   "id": "demo-2026-11-011",
+   "data": "2026-11-09",
+   "conta": "Cartão Aurora",
+   "valor": -36.07,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "APP CORRIDA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Corrida por aplicativo",
+   "grupo": "gasto",
+   "categoria": "Transporte"
+  },
+  {
+   "id": "demo-2026-11-012",
+   "data": "2026-11-16",
+   "conta": "Cartão Aurora",
+   "valor": -36.07,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "APP CORRIDA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Corrida por aplicativo",
+   "grupo": "gasto",
+   "categoria": "Transporte"
+  },
+  {
+   "id": "demo-2026-11-013",
+   "data": "2026-11-04",
+   "conta": "Cartão Aurora",
+   "valor": -34.17,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "APP CORRIDA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Corrida por aplicativo",
+   "grupo": "gasto",
+   "categoria": "Transporte"
+  },
+  {
+   "id": "demo-2026-11-014",
+   "data": "2026-11-09",
+   "conta": "Cartão Aurora",
+   "valor": -196.31,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "POSTO ESTRADA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Combustível",
+   "grupo": "gasto",
+   "categoria": "Transporte"
+  },
+  {
+   "id": "demo-2026-11-015",
+   "data": "2026-11-19",
+   "conta": "Cartão Aurora",
+   "valor": -71.25,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "PETSHOP AMIGO FIEL",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Ração e petiscos",
+   "grupo": "gasto",
+   "categoria": "Pet",
+   "bruto": -142.5,
+   "a_receber": 71.25,
+   "splitwise": true,
+   "nota": "R$ 142,50 no banco, dividido com Bia, Sua parte R$ 71,25, a receber R$ 71,25"
+  },
+  {
+   "id": "demo-2026-11-016",
+   "data": "2026-11-21",
+   "conta": "Cartão Aurora",
+   "valor": -89.26,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "FARMACIA SAUDE",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Farmácia",
+   "grupo": "gasto",
+   "categoria": "Drogaria"
+  },
+  {
+   "id": "demo-2026-11-017",
+   "data": "2026-11-23",
+   "conta": "Pay Verde",
+   "valor": -55.0,
+   "modalidade": "PIX",
+   "tipo": "Variável",
+   "nome_original": "PIX BARBEARIA CLASSICA",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Barbearia",
+   "grupo": "gasto",
+   "categoria": "Estética e higiene"
+  },
+  {
+   "id": "demo-2026-11-018",
+   "data": "2026-11-03",
+   "conta": "Cartão Aurora",
+   "valor": -189.9,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "LOJA ESPORTE 05/06",
+   "ids_extras": [],
+   "tags": [],
+   "descricao": "Tênis de corrida (5/6)",
+   "grupo": "gasto",
+   "categoria": "Compras"
+  },
+  {
+   "id": "demo-2026-11-019",
+   "data": "2026-11-02",
+   "conta": "Cartão Aurora",
+   "valor": -410.0,
+   "modalidade": "Crédito",
+   "tipo": "Variável",
+   "nome_original": "COMPANHIA AEREA 04/10",
+   "ids_extras": [],
+   "tags": [
+    "viagem lisboa"
+   ],
+   "descricao": "Passagem para Lisboa (4/10)",
+   "grupo": "gasto",
+   "categoria": "Viagem"
+  }
+ ],
+ "cartao": {
+  "conectado": true,
+  "vencimento_dia": 10,
+  "finais_usuario": [
+   "4821"
+  ],
+  "outros_cartoes_ignorados": {
+   "1033": 12,
+   "7720": 6
+  },
+  "fatura_bruta": 2241.19,
+  "terceiros": 0.0,
+  "minha_parte": 1755.1,
+  "a_receber": 486.06,
+  "compras": 17,
+  "fatura_total_cartao": 2241.19,
+  "conferencia_fatura": {
+   "oficial": 2241.19,
+   "soma_lancamentos": 2241.19,
+   "completa": true
+  },
+  "vencimento": "2026-11-10"
+ }
+}
