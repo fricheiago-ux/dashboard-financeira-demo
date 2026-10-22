@@ -373,8 +373,9 @@
   .ja-lancei { position: relative; flex: none; width: 82px; height: 82px; border-radius: 50%; margin: -8px -4px; transition: transform .4s var(--spring); }
   .ja-lancei:active { transform: scale(.92); }
   .ja-lancei .anel { position: absolute; inset: 0; width: 100%; height: 100%; animation: gira 16s linear infinite; }
-  .ja-lancei .anel text { font: 800 8.4px var(--ff); letter-spacing: .5px; fill: var(--ouro-texto); }
-  .ja-lancei .miolo { position: absolute; inset: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--ouro-texto); color: #fff; font-size: 18px; font-weight: 800; box-shadow: 0 6px 14px -6px rgba(122,92,10,.7); transition: background .3s, transform .4s var(--spring); }
+  .ja-lancei .anel text { font: 800 7.2px var(--ff); letter-spacing: .5px; fill: var(--ouro-texto); }
+  .ja-lancei .miolo img { display: block; width: 100%; height: 100%; border-radius: 50%; }
+  .ja-lancei .miolo { position: absolute; inset: 21px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: #fff; overflow: hidden; font-size: 18px; font-weight: 800; box-shadow: 0 6px 14px -6px rgba(122,92,10,.7); transition: background .3s, transform .4s var(--spring); }
   .ja-lancei.carregando .miolo { color: transparent; }
   .ja-lancei.carregando .miolo::after { content: ""; position: absolute; width: 18px; height: 18px; border-radius: 50%; border: 3px solid rgba(255,255,255,.4); border-top-color: #fff; animation: gira .8s linear infinite; }
   .ja-lancei.carregando .anel { animation-duration: 3s; }
@@ -544,7 +545,7 @@
 <div id="decor" aria-hidden="true"></div>
 <div id="moedas" aria-hidden="true"></div>
 <main>
-  <div class="demo-faixa">Demonstração: todos os nomes, valores, bancos e pessoas são fictícios. As ações (classificar, “já lancei”, atualizar) são simuladas.</div>
+  <div class="demo-faixa">Demonstração: todos os nomes, valores, bancos e pessoas são fictícios. As ações (classificar, lançar no Splitwise, atualizar) são simuladas.</div>
   <header>
     <div>
       <p class="kicker"><b>(00)</b> Controle financeiro</p>
@@ -614,7 +615,7 @@
   <div class="card clicavel" id="card-viagem" role="button" tabindex="0" aria-label="Ver os gastos da viagem a Lisboa" style="--cor: var(--azul); margin-bottom: 16px">
     <div class="viagem-texto"><div class="titulo">Viagem Lisboa <span class="chip tag">✈ tag viagem lisboa</span></div>
     <div class="big" id="viagem-total"></div><div class="det" id="viagem-det"></div><div class="ver-mais">Ver lançamentos do mês ↓</div></div>
-    <img class="viagem-foto" src="imagens/lisboa.webp" alt="Rua Augusta, em Lisboa, ao entardecer" width="900" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+    <img class="viagem-foto" src="imagens/lisboa.webp" alt="Rua Augusta, em Lisboa, ao entardecer" width="1000" height="667" loading="lazy" decoding="async" onerror="this.remove()">
   </div>
 
   <div class="card saida" style="--cor: var(--laranja); margin-bottom: 16px"><div class="titulo">Despesas por categoria</div><div class="grupos-despesa" id="categorias"></div></div>
@@ -695,7 +696,7 @@
 
 <script>
 // ---------- MODO DEMONSTRAÇÃO ----------
-// Esta versão não tem servidor: lê os arquivos de dados/ (todos fictícios) e simula as ações (classificar, "já lancei", atualizar).
+// Esta versão não tem servidor: lê os arquivos de dados/ (todos fictícios) e simula as ações (classificar, lançar no Splitwise, atualizar).
 const HOJE = "2026-10-21";
 const DEMO = { resolvidos: new Set(), lancados: new Set(), tentativas: {}, extras: {} };
 const _fetchReal = window.fetch.bind(window);
@@ -718,12 +719,18 @@ async function buscar(url, opc) {
       const lancado = DEMO.tentativas[corpo.id] >= 2; if (lancado) DEMO.lancados.add(corpo.id);
       return ok({ ok: true, lancado, testes_ok: true });
     }
+    if (rota === "/lancar-splitwise") {   // na demonstração nada é enviado: só mostra o fluxo e dá o gasto por lançado
+      DEMO.lancados.add(corpo.id);
+      return ok({ ok: true, lancado: true, testes_ok: true, resumo: "Lançamento de demonstração" });
+    }
     return ok({ ok: true, testes_ok: true });   // /atualizar
   }
   const arquivo = async nome => { const r = await _fetchReal(nome); return { ok: r.ok, json: () => r.json() }; };
   if (rota === "/meses") return arquivo("dados/meses.json");
   if (rota === "/resumo") return arquivo("dados/resumo.json");
   if (rota === "/categorias") return arquivo("dados/categorias.json");
+  if (rota === "/categorias-splitwise") return ok({ categorias: ["Aluguel", "Animais de estimação", "Avião", "Bebidas alcoólicas", "Eletricidade", "Filmes", "Geral", "Hotel", "Jantar fora", "Limpeza", "Manutenção", "Mercado", "Presentes", "Serviços", "TV/Telefone/Internet"],
+    sugestoes: { "Mercado": "Mercado", "Restaurantes": "Jantar fora", "Pet": "Animais de estimação", "Rolês": "Bebidas alcoólicas", "Presentes": "Presentes", "Viagem": "Avião", "Limpeza": "Limpeza", "Contas da casa": "Eletricidade", "Moradia": "Aluguel", "Apartamento": "Manutenção" } });
   if (rota === "/painel.json") {
     const r = await _fetchReal("dados/painel-" + q.get("mes") + ".json"); if (!r.ok) return { ok: false, json: async () => ({}) };
     const p = await r.json(), pe = p.pendentes;
@@ -1231,8 +1238,8 @@ function renderInvestimentos() {
 
 // ---------- Tarefas pendentes ----------
 // Cada tipo de pendência vira uma linha do checklist. Mapeamento e "Conferir o Splitwise" abrem um diálogo para você dizer o que é
-// (a resposta é gravada em classificacoes.json e a dash recalcula); "Lançar no Splitwise" tem o botão "já lancei", que confere no Splitwise
-// (só leitura). Quando termina, a linha é taxada, some, e as de baixo sobem. Sem pendência nenhuma: parabéns.
+// (a resposta é gravada em classificacoes.json e a dash recalcula); "Lançar no Splitwise" tem o botão do Splitwise, que pergunta divisão, categoria e nome e lança
+// só depois da confirmação (rota /lancar-splitwise). Quando termina, a linha é taxada, some, e as de baixo sobem. Sem pendência nenhuma: parabéns.
 let TAREFAS = [], RESOLVIDOS = new Set(), POPUP_TAREFA = null, CATEGORIAS = null, CL = null;
 const plural = n => n + (n === 1 ? " pendência" : " pendências");
 const atualizarOverflow = () => { document.body.style.overflow = document.querySelector(".modal.on") ? "hidden" : ""; };
@@ -1250,7 +1257,7 @@ function calcularTarefas() {
       dica: "Toque numa despesa para me dizer o que ela é. Fica fora dos totais até você responder. Abaixo de cada uma, minha melhor pista.",
       chave: i => i.id, linha: i => '<span class="item-txt">' + dataBr(i.data) + " · " + esc(i.descricao) + " (" + esc(i.conta) + ")<small>" + esc(i.sugestao || i.pergunta || "") + "</small></span>" + valorHtml(i) + '<span class="seta" aria-hidden="true">›</span>' },
     { id: "splitwise", abre: "lancei", titulo: "Lançar gastos no Splitwise", sub: "Saiu do seu bolso e parece despesa da casa", itens: pe.falta_no_splitwise,
-      dica: "Lance cada gasto no Splitwise e toque em “já lancei”: eu vou conferir lá (só leitura) se apareceu.",
+      dica: "Toque no botão do Splitwise para lançar o gasto: eu pergunto a divisão, a categoria e o nome, mostro o resumo e só lanço depois do seu OK.",
       chave: i => i.id, linha: i => '<span class="item-txt">' + dataBr(i.data) + " · " + esc(i.descricao) + "<small>" + esc(i.categoria) + " · " + esc(i.conta) + '</small></span><span class="item-valor">' + brl(i.bruto ?? i.valor) + "</span>" },
     { id: "devedores", abre: "", titulo: "Cobrar devedores", sub: "Gastos que você pagou por outras pessoas", itens: devedores, atraso: atrasados,
       dica: "Você pagou por estas pessoas. O prazo é o vencimento da fatura (dia 9). Elas não contam como gasto seu. Some sozinho quando o dinheiro aparece (Atualizar dados).",
@@ -1289,7 +1296,7 @@ function confete(alvo) {
     alvo.appendChild(c); setTimeout(() => c.remove(), 1500);
   }
 }
-const ANEL = k => '<svg class="anel" viewBox="0 0 80 80" aria-hidden="true"><defs><path id="arco' + k + '" d="M40 40m-29 0a29 29 0 1 1 58 0a29 29 0 1 1-58 0"/></defs><text><textPath href="#arco' + k + '" textLength="176" lengthAdjust="spacing">JÁ LANCEI · JÁ LANCEI · </textPath></text></svg><span class="miolo">✓</span>';
+const ANEL = k => '<svg class="anel" viewBox="0 0 80 80" aria-hidden="true"><defs><path id="arco' + k + '" d="M40 40m-29 0a29 29 0 1 1 58 0a29 29 0 1 1-58 0"/></defs><text><textPath href="#arco' + k + '" textLength="176" lengthAdjust="spacing">LANÇAR NO SPLIT · LANÇAR NO SPLIT · </textPath></text></svg><span class="miolo"><img src="imagens/splitwise.webp" alt="" width="36" height="36"></span>';
 function abrirTarefa(k, e) {
   const t = TAREFAS[k]; if (!t) return;
   POPUP_TAREFA = t.id; RESOLVIDOS = new Set();
@@ -1297,9 +1304,9 @@ function abrirTarefa(k, e) {
   $("modal-tarefa-titulo").textContent = t.titulo;
   $("tarefa-dica").textContent = t.dica;
   $("tarefa-lista").innerHTML = t.itens.map((it, n) => '<li class="' + (t.abre === "dialogo" ? "item-clic" : "") + '" data-n="' + n + '" data-chave="' + esc(t.chave(it)) + '">' + t.linha(it)
-    + (t.abre === "lancei" ? '<button class="ja-lancei" data-n="' + n + '" aria-label="Já lancei no Splitwise">' + ANEL(n) + "</button>" : "") + "</li>").join("");
+    + (t.abre === "lancei" ? '<button class="ja-lancei" data-n="' + n + '" aria-label="Lançar no Splitwise">' + ANEL(n) + "</button>" : "") + "</li>").join("");
   $("tarefa-lista").querySelectorAll("li.item-clic").forEach(li => li.onclick = ev => abrirClassificar(t, t.itens[+li.dataset.n], li, ev));
-  $("tarefa-lista").querySelectorAll(".ja-lancei").forEach(b => b.onclick = () => conferirLancamento(t, t.itens[+b.dataset.n], b.closest("li"), b));
+  $("tarefa-lista").querySelectorAll(".ja-lancei").forEach(b => b.onclick = ev => abrirLancar(t, t.itens[+b.dataset.n], b.closest("li"), ev));
   atualizarCabecalhoTarefa();
   origemRevelacao(caixa, e);
   m.classList.add("on"); m.setAttribute("aria-hidden", "false"); atualizarOverflow();
@@ -1329,16 +1336,68 @@ async function recarregar() {
   const [novo, resumo] = await Promise.all([buscar("/painel.json?mes=" + encodeURIComponent(P.mes)).then(r => r.json()), buscar("/resumo").then(r => r.json())]);
   P = novo; RESUMO = resumo; render();
 }
-// "já lancei": o servidor baixa o Splitwise de novo (só leitura), reprocessa e diz se o gasto ainda falta lançar
-async function conferirLancamento(t, item, li, btn) {
-  if (btn.classList.contains("carregando") || li.classList.contains("feito")) return;
-  btn.classList.add("carregando");
-  const r = await postar("/conferir-splitwise", { mes: P.mes, id: item.id });
-  btn.classList.remove("carregando");
-  if (!r.ok) { avisoFlutuante(r.erro || "Não consegui conferir agora."); return; }
-  if (!r.lancado) { avisoFlutuante("Lançamento ainda não identificado"); return; }
+// Lançar no Splitwise (única escrita da dash no Splitwise): pergunta divisão, categoria e nome, mostra o resumo e só lança no botão final.
+let CATS_SPLIT = null;
+const R2 = n => Math.round(n * 100) / 100;
+async function abrirLancar(t, item, li, e) {
+  if (li.classList.contains("feito")) return;
+  CL = { t, item, li, modo: "lancar", passo: 1 };
+  if (!CATS_SPLIT) CATS_SPLIT = await buscar("/categorias-splitwise").then(r => r.json()).catch(() => null);
+  if (!CATS_SPLIT || !CATS_SPLIT.categorias) { CATS_SPLIT = null; CL = null; avisoFlutuante("Não consegui ler as categorias do Splitwise agora."); return; }
+  const total = R2(Math.abs(item.bruto ?? item.valor)), deve = item.a_receber > 0 ? R2(item.a_receber) : null;
+  CL.total = total;
+  CL.div = deve === null || Math.abs(deve - total / 2) < 0.02 ? "meio" : Math.abs(deve - total) < 0.01 ? "ba" : "outro";
+  CL.outro = deve;
+  const m = $("modal-classificar"), caixa = m.querySelector(".md-in");
+  $("cl-kicker").textContent = "Lançar no Splitwise";
+  $("cl-titulo").textContent = "Vamos lançar este gasto";
+  $("cl-resumo").innerHTML = dataBr(item.data) + " · " + esc(item.descricao) + (item.conta ? " (" + esc(item.conta) + ")" : "") + " · <b>" + brl(total) + "</b><small>Pago por você. Eu pergunto o resto e só lanço depois do seu OK.</small>";
+  const sug = CATS_SPLIT.sugestoes[item.categoria] || "";
+  $("cl-corpo").innerHTML = '<label class="cl-campo">Nome da despesa<input id="cl-desc" maxlength="90" autocomplete="off" value="' + esc(item.descricao) + '"></label>'
+    + '<label class="cl-campo">Categoria no Splitwise<input id="cl-cat" list="cl-cats" maxlength="40" autocomplete="off" value="' + esc(sug) + '" placeholder="Escolha uma categoria"><datalist id="cl-cats">' + CATS_SPLIT.categorias.map(c => '<option value="' + esc(c) + '">').join("") + "</datalist></label>"
+    + '<div class="cl-campo" style="margin-bottom:6px">Dividido entre</div><div class="cl-opcoes">'
+    + [["meio", "Você e a Bia, meio a meio"], ["ba", "Só da Bia (ela deve tudo)"], ["outro", "Outro valor"]].map(([v, rot]) => '<label><input type="radio" name="cl-div" value="' + v + '"' + (CL.div === v ? " checked" : "") + ">" + rot + "</label>").join("") + "</div>"
+    + '<label class="cl-campo" id="cl-outro-box" style="' + (CL.div === "outro" ? "" : "display:none") + '">Quanto a Bia deve (R$)<input id="cl-outro" inputmode="decimal" autocomplete="off" value="' + (CL.outro !== null ? String(CL.outro).replace(".", ",") : "") + '" placeholder="Ex.: 74,90"></label>';
+  $("cl-corpo").querySelectorAll('input[name="cl-div"]').forEach(r => r.onchange = () => { $("cl-outro-box").style.display = r.value === "outro" && r.checked ? "" : "none"; });
+  $("cl-erro").textContent = ""; $("cl-salvar").disabled = false; $("cl-salvar").textContent = "Continuar";
+  origemRevelacao(caixa, e);
+  m.classList.add("on"); m.setAttribute("aria-hidden", "false"); atualizarOverflow();
+  setTimeout(() => $("cl-desc")?.focus(), 350);
+}
+function avancarLancar() {
+  const c = CL;
+  if (c.passo === 1) {
+    const desc = $("cl-desc").value.trim(), cat = $("cl-cat").value.trim(), div = document.querySelector('input[name="cl-div"]:checked')?.value || "meio";
+    if (!desc) { $("cl-erro").textContent = "Confirme o nome da despesa."; return; }
+    const nomeCat = CATS_SPLIT.categorias.find(x => x.toLowerCase() === cat.toLowerCase());
+    if (!nomeCat) { $("cl-erro").textContent = "Escolha uma categoria da lista do Splitwise."; return; }
+    let deve;
+    if (div === "meio") deve = R2(c.total / 2);
+    else if (div === "ba") deve = c.total;
+    else { deve = R2(parseFloat(String($("cl-outro").value).replace(/\./g, "").replace(",", "."))); if (!(deve >= 0 && deve <= c.total)) { $("cl-erro").textContent = "A parte da Bia tem que ficar entre R$ 0,00 e " + brl(c.total) + "."; return; } }
+    Object.assign(c, { desc, cat: nomeCat, deve, passo: 2 });
+    $("cl-titulo").textContent = "Confere e confirma";
+    $("cl-corpo").innerHTML = '<div class="cl-resumo" style="font-weight:600;line-height:1.7">'
+      + "<b>Nome:</b> " + esc(desc) + "<br><b>Valor:</b> " + brl(c.total) + " em " + dataBr(c.item.data) + "<br><b>Quem pagou:</b> você<br><b>Divisão:</b> você " + brl(R2(c.total - deve)) + " e Bia " + brl(deve)
+      + "<br><b>Categoria:</b> " + esc(nomeCat) + '<small>Isto vai ser lançado de verdade no seu Splitwise e a Bia vai ver.</small></div>'
+      + '<button class="sec" id="cl-voltar" type="button" style="margin-bottom:6px">‹ Voltar e mudar</button>';
+    $("cl-voltar").onclick = () => abrirLancar(c.t, c.item, c.li, { clientX: 0, clientY: 0, semAnimacao: true });
+    $("cl-erro").textContent = ""; $("cl-salvar").textContent = "Confirmar e lançar no Splitwise";
+    return;
+  }
+  confirmarLancamento();
+}
+async function confirmarLancamento() {
+  const { t, item, li, desc, cat, deve } = CL;
+  $("cl-salvar").disabled = true; $("cl-salvar").textContent = "Lançando…"; $("cl-erro").textContent = "";
+  let r;
+  try { const resp = await buscar("/lancar-splitwise", { method: "POST", headers: { "Content-Type": "application/json", "X-Dash": "1" }, body: JSON.stringify({ mes: P.mes, id: item.id, descricao: desc, categoria: cat, deve_ba: deve, confirmado: true }) }); r = await resp.json(); }
+  catch (e) { r = { ok: false, erro: "O servidor não respondeu." }; }
+  if (!r.ok) { $("cl-erro").textContent = r.erro || "Não consegui lançar."; $("cl-salvar").disabled = false; $("cl-salvar").textContent = "Confirmar e lançar no Splitwise"; return; }
+  fecharClassificar(); CL = null;
   marcarFeito(li);
   await recarregar();
+  if (!r.lancado) avisoFlutuante("Lançado no Splitwise, mas a dash ainda não reconheceu. Clique em Atualizar dados.");
   // outros gastos que o Splitwise passou a reconhecer também são marcados
   const faltam = new Set(P.pendentes.falta_no_splitwise.map(i => i.id));
   $("tarefa-lista").querySelectorAll("li[data-chave]").forEach(l => { if (!faltam.has(l.dataset.chave)) marcarFeito(l); });
@@ -1370,6 +1429,7 @@ async function abrirClassificar(t, item, li, e) {
 function fecharClassificar() { const m = $("modal-classificar"); m.classList.remove("on"); m.setAttribute("aria-hidden", "true"); atualizarOverflow(); }
 async function salvarClassificacao() {
   if (!CL) return;
+  if (CL.modo === "lancar") return avancarLancar();
   const { t, item, li } = CL, sempar = t.id === "sempar", desc = $("cl-desc").value.trim(), cat = sempar ? "" : $("cl-cat").value.trim();
   if (!desc) { $("cl-erro").textContent = sempar ? "Explique em poucas palavras." : "Diga o que é em poucas palavras."; return; }
   if (!sempar && !cat) { $("cl-erro").textContent = "Escolha ou digite uma categoria."; return; }

@@ -8,3 +8,7 @@
 - **Nomes e logos de bancos (Santander, Nubank, Inter, Revolut)**: marcas dos respectivos donos (os logos do Santander e da Revolut foram baixados pelo autor), citadas apenas como exemplo; os dados são fictícios e não há relação com essas empresas.
 
 O restante (código da tela, dados fictícios, textos) é do autor, com todos os direitos reservados.
+
+## Logo do Splitwise
+
+A imagem `imagens/splitwise.webp` é o logo do Splitwise, marca do próprio Splitwise, usada só para identificar o botão de lançar no Splitwise. Sem relação com a empresa. Na demonstração, o lançamento é simulado e nada é enviado.
