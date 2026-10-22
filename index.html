@@ -1379,7 +1379,7 @@ function avancarLancar() {
     $("cl-titulo").textContent = "Confere e confirma";
     $("cl-corpo").innerHTML = '<div class="cl-resumo" style="font-weight:600;line-height:1.7">'
       + "<b>Nome:</b> " + esc(desc) + "<br><b>Valor:</b> " + brl(c.total) + " em " + dataBr(c.item.data) + "<br><b>Quem pagou:</b> você<br><b>Divisão:</b> você " + brl(R2(c.total - deve)) + " e Bia " + brl(deve)
-      + "<br><b>Categoria:</b> " + esc(nomeCat) + '<small>Isto vai ser lançado de verdade no seu Splitwise e a Bia vai ver.</small></div>'
+      + "<br><b>Categoria:</b> " + esc(nomeCat) + '<small>Na demonstração nada é enviado de verdade: o lançamento é simulado.</small></div>'
       + '<button class="sec" id="cl-voltar" type="button" style="margin-bottom:6px">‹ Voltar e mudar</button>';
     $("cl-voltar").onclick = () => abrirLancar(c.t, c.item, c.li, { clientX: 0, clientY: 0, semAnimacao: true });
     $("cl-erro").textContent = ""; $("cl-salvar").textContent = "Confirmar e lançar no Splitwise";
