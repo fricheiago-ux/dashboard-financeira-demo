@@ -337,14 +337,17 @@
   .tarefa { display: flex; align-items: center; gap: 14px; text-align: left; padding: 13px 10px; margin: 0 -10px; border-radius: 14px; border-top: 1px solid var(--linha); width: calc(100% + 20px); max-height: 110px; overflow: hidden; transition: background .3s var(--ease), transform .4s var(--spring), max-height .7s var(--ease), opacity .6s var(--ease), padding .7s var(--ease), border-color .7s; }
   .tarefa:first-of-type { border-top: 0; }
   .tarefa:active { transform: scale(.985); }
-  .tarefa .caixa { flex: none; width: 24px; height: 24px; border-radius: 8px; border: 2px solid var(--ouro-texto); display: grid; place-items: center; color: transparent; font-size: 15px; font-weight: 800; transition: background .3s, color .3s, transform .5s var(--spring); }
+  /* marcador da lista (no lugar do checkbox, que ninguém clica aqui): losango dourado; ao concluir vira o ✓ */
+  .tarefa .marcador { flex: none; width: 24px; height: 24px; border-radius: 8px; display: grid; place-items: center; transition: background .3s, transform .5s var(--spring); }
+  .tarefa .marcador::before { content: ""; width: 10px; height: 10px; border-radius: 2px; transform: rotate(45deg); background: var(--ouro-claro); box-shadow: 0 0 0 4px rgba(212, 175, 55, .22); transition: transform .5s var(--spring), box-shadow .3s; }
   .tarefa-txt { flex: 1; min-width: 0; font-size: 15px; font-weight: 800; transition: opacity .4s; }
   .tarefa-txt small { display: block; margin-top: 2px; color: var(--suave); font-size: 12.5px; font-weight: 600; }
   .tarefa-n { flex: none; font-size: 12px; font-weight: 800; letter-spacing: .04em; padding: 5px 12px; border-radius: 999px; background: var(--azul-claro); color: var(--ouro-texto); white-space: nowrap; }
   .tarefa-n.atraso { background: var(--ruim-bg); color: var(--ruim); }
   .tarefa .seta { flex: none; font-size: 22px; font-weight: 800; color: var(--apagado); transition: transform .4s var(--spring); }
   /* tarefa concluída: marcador preenchido e texto taxado; depois ela encolhe e as de baixo sobem */
-  .tarefa.concluida .caixa { background: var(--ouro-texto); color: #fff; transform: scale(1.12); }
+  .tarefa.concluida .marcador { background: var(--ouro-texto); transform: scale(1.12); }
+  .tarefa.concluida .marcador::before { content: "✓"; width: auto; height: auto; transform: none; background: none; box-shadow: none; color: #fff; font-size: 15px; font-weight: 800; }
   .tarefa.concluida .tarefa-txt { text-decoration: line-through; opacity: .55; }
   .tarefa.concluida .tarefa-n, .tarefa.concluida .seta { opacity: .35; }
   .tarefa.saindo { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; border-top-color: transparent; pointer-events: none; }
@@ -365,6 +368,13 @@
   .lista-tarefa li.item-clic .seta { font-size: 22px; color: var(--apagado); transition: transform .4s var(--spring); }
   .lista-tarefa li.feito .item-txt, .lista-tarefa li.feito .item-valor { text-decoration: line-through; opacity: .5; }
   .lista-tarefa li.feito::before { content: "✓"; flex: none; width: 22px; height: 22px; margin-right: -4px; border-radius: 7px; display: grid; place-items: center; background: var(--ouro-texto); color: #fff; font-size: 13px; font-weight: 800; animation: icone-pop .6s var(--spring) both; }
+  .nao-lancar { flex: none; position: relative; display: grid; place-items: center; cursor: pointer; margin-right: -2px; }
+  .nao-lancar input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .nao-lancar .caixa { width: 24px; height: 24px; border-radius: 8px; border: 2px solid var(--ouro-texto); display: grid; place-items: center; color: transparent; font-size: 15px; font-weight: 800; transition: background .3s, color .3s, transform .4s var(--spring); }
+  .nao-lancar input:checked + .caixa { background: var(--ouro-texto); color: #fff; transform: scale(1.1); }
+  .nao-lancar input:focus-visible + .caixa { outline: 2px solid var(--ouro-claro); outline-offset: 2px; }
+  .lista-tarefa li.feito .nao-lancar { display: none; }
+  @media (hover: hover) { .nao-lancar:hover .caixa { background: var(--azul-claro); } .nao-lancar input:checked:hover + .caixa { background: var(--ouro-texto); } }
   .lista-tarefa li.some { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; border-top-color: transparent; pointer-events: none; }
   .lista-tarefa .vazio { padding: 14px 0; }
   .tudo-certo { margin: 10px 0 0; padding: 12px 14px; border-radius: 12px; background: var(--azul-claro); color: var(--ouro-texto); font-size: 14px; font-weight: 800; animation: subir-leve .5s var(--ease) both; }
@@ -481,7 +491,7 @@
     button.primario:hover::after { transform: translateX(5px); }
     .barra:hover { background: var(--laranja-claro); }
     .tarefa:hover { background: var(--azul-claro); }
-    .tarefa:hover .caixa { background: var(--ouro-claro); color: #fff; }
+    .tarefa:hover .marcador::before { transform: rotate(45deg) scale(1.35); box-shadow: 0 0 0 5px rgba(212, 175, 55, .3); }
     .tarefa:hover .seta { transform: translateX(5px); }
     .lista-tarefa li.item-clic:hover { background: var(--azul-claro); }
     .lista-tarefa li.item-clic:hover .seta { transform: translateX(5px); }
@@ -706,6 +716,7 @@ async function buscar(url, opc) {
   if (opc && opc.method === "POST") {
     const corpo = JSON.parse(opc.body || "{}"); await new Promise(r => setTimeout(r, 900));
     if (rota === "/classificar") {
+      if (corpo.tipo === "nao_lancar") { DEMO.lancados.add(corpo.id); return ok({ ok: true, testes_ok: true }); }   // caixinha "não vou lançar"
       if (corpo.tipo === "sempar") DEMO.resolvidos.add("sw" + corpo.splitwise_id);
       else {
         DEMO.resolvidos.add(corpo.id);
@@ -1257,7 +1268,7 @@ function calcularTarefas() {
       dica: "Toque numa despesa para me dizer o que ela é. Fica fora dos totais até você responder. Abaixo de cada uma, minha melhor pista.",
       chave: i => i.id, linha: i => '<span class="item-txt">' + dataBr(i.data) + " · " + esc(i.descricao) + " (" + esc(i.conta) + ")<small>" + esc(i.sugestao || i.pergunta || "") + "</small></span>" + valorHtml(i) + '<span class="seta" aria-hidden="true">›</span>' },
     { id: "splitwise", abre: "lancei", titulo: "Lançar gastos no Splitwise", sub: "Saiu do seu bolso e parece despesa da casa", itens: pe.falta_no_splitwise,
-      dica: "Toque no botão do Splitwise para lançar o gasto: eu pergunto a divisão, a categoria e o nome, mostro o resumo e só lanço depois do seu OK.",
+      dica: "Toque no botão do Splitwise para lançar o gasto: eu pergunto a divisão, a categoria e o nome, mostro o resumo e só lanço depois do seu OK. Se não for lançar, marque a caixinha ao lado: o gasto fica como está e sai desta lista.",
       chave: i => i.id, linha: i => '<span class="item-txt">' + dataBr(i.data) + " · " + esc(i.descricao) + "<small>" + esc(i.categoria) + " · " + esc(i.conta) + '</small></span><span class="item-valor">' + brl(i.bruto ?? i.valor) + "</span>" },
     { id: "devedores", abre: "", titulo: "Cobrar devedores", sub: "Gastos que você pagou por outras pessoas", itens: devedores, atraso: atrasados,
       dica: "Você pagou por estas pessoas. O prazo é o vencimento da fatura (dia 9). Elas não contam como gasto seu. Some sozinho quando o dinheiro aparece (Atualizar dados).",
@@ -1278,7 +1289,7 @@ function renderTarefas(vindoDeConclusao) {
   }
   $("tarefas-total").hidden = false;
   $("tarefas-total").textContent = TAREFAS.reduce((a, t) => a + t.itens.length, 0);
-  $("tarefas-lista").innerHTML = TAREFAS.map((t, k) => '<button class="tarefa" data-k="' + k + '" data-id="' + t.id + '"><span class="caixa" aria-hidden="true">✓</span><span class="tarefa-txt">' + t.titulo + "<small>" + t.sub + '</small></span>'
+  $("tarefas-lista").innerHTML = TAREFAS.map((t, k) => '<button class="tarefa" data-k="' + k + '" data-id="' + t.id + '"><span class="marcador" aria-hidden="true"></span><span class="tarefa-txt">' + t.titulo + "<small>" + t.sub + '</small></span>'
     + (t.atraso ? '<span class="tarefa-n atraso">' + t.atraso + (t.atraso === 1 ? " atrasado" : " atrasados") + "</span>" : "") + '<span class="tarefa-n">' + plural(t.itens.length) + '</span><span class="seta" aria-hidden="true">›</span></button>').join("");
   $("tarefas-lista").querySelectorAll(".tarefa").forEach(b => b.onclick = e => abrirTarefa(+b.dataset.k, e));
 }
@@ -1303,9 +1314,11 @@ function abrirTarefa(k, e) {
   const m = $("modal-tarefa"), caixa = m.querySelector(".md-in");
   $("modal-tarefa-titulo").textContent = t.titulo;
   $("tarefa-dica").textContent = t.dica;
-  $("tarefa-lista").innerHTML = t.itens.map((it, n) => '<li class="' + (t.abre === "dialogo" ? "item-clic" : "") + '" data-n="' + n + '" data-chave="' + esc(t.chave(it)) + '">' + t.linha(it)
+  $("tarefa-lista").innerHTML = t.itens.map((it, n) => '<li class="' + (t.abre === "dialogo" ? "item-clic" : "") + '" data-n="' + n + '" data-chave="' + esc(t.chave(it)) + '">'
+    + (t.abre === "lancei" ? '<label class="nao-lancar" title="Não vou lançar este gasto no Splitwise"><input type="checkbox" data-n="' + n + '" aria-label="Não vou lançar no Splitwise"><span class="caixa" aria-hidden="true">✓</span></label>' : "") + t.linha(it)
     + (t.abre === "lancei" ? '<button class="ja-lancei" data-n="' + n + '" aria-label="Lançar no Splitwise">' + ANEL(n) + "</button>" : "") + "</li>").join("");
   $("tarefa-lista").querySelectorAll("li.item-clic").forEach(li => li.onclick = ev => abrirClassificar(t, t.itens[+li.dataset.n], li, ev));
+  $("tarefa-lista").querySelectorAll(".nao-lancar input").forEach(c => c.onchange = () => { if (c.checked) naoLancar(t, t.itens[+c.dataset.n], c.closest("li"), c); });
   $("tarefa-lista").querySelectorAll(".ja-lancei").forEach(b => b.onclick = ev => abrirLancar(t, t.itens[+b.dataset.n], b.closest("li"), ev));
   atualizarCabecalhoTarefa();
   origemRevelacao(caixa, e);
@@ -1335,6 +1348,16 @@ function avisoFlutuante(texto) {
 async function recarregar() {
   const [novo, resumo] = await Promise.all([buscar("/painel.json?mes=" + encodeURIComponent(P.mes)).then(r => r.json()), buscar("/resumo").then(r => r.json())]);
   P = novo; RESUMO = resumo; render();
+}
+// Caixinha "não vou lançar": o gasto sai da lista e a dash para de cobrar (nada é enviado ao Splitwise)
+async function naoLancar(t, item, li, caixa) {
+  caixa.disabled = true;
+  const r = await postar("/classificar", { tipo: "nao_lancar", mes: P.mes, id: item.id });
+  if (!r.ok) { caixa.checked = false; caixa.disabled = false; avisoFlutuante(r.erro || "Não consegui salvar agora."); return; }
+  marcarFeito(li);
+  await recarregar();
+  const faltam = new Set(P.pendentes.falta_no_splitwise.map(i => i.id));
+  $("tarefa-lista").querySelectorAll("li[data-chave]").forEach(l => { if (!faltam.has(l.dataset.chave)) marcarFeito(l); });
 }
 // Lançar no Splitwise (única escrita da dash no Splitwise): pergunta divisão, categoria e nome, mostra o resumo e só lança no botão final.
 let CATS_SPLIT = null;
