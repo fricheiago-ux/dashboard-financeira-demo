@@ -173,6 +173,10 @@
   .grupo-despesa h3 b { font-size: 22px; font-weight: 400; font-variant-numeric: tabular-nums; color: var(--cor-grupo); }
   .grupo-despesa.fixo { --cor-grupo: var(--tinta); } .grupo-despesa.variavel { --cor-grupo: var(--rosa); }
   .grupo-despesa .barra .trilho i { background: var(--cor-grupo); }
+  /* gastos fixos ainda não confirmados: mais transparentes, só para dar a visão do que vem (não entram nos totais) */
+  .ag-titulo { margin: 12px 0 2px; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--suave); }
+  .barra.agendado { opacity: .5; cursor: default; }
+  .barra.agendado .ag-tag { display: inline-block; justify-self: start; padding: 3px 10px; border: 1.5px dashed var(--cor-grupo); border-radius: 999px; font-size: 11.5px; font-weight: 800; letter-spacing: .04em; color: var(--cor-grupo); white-space: nowrap; }
   @media (max-width: 900px) { .grupos-despesa { grid-template-columns: 1fr; gap: 28px; } }
   .sub-titulo { font-family: var(--ff-d); font-weight: 400; font-size: 26px; text-transform: uppercase; margin: 22px 0 12px; }
   .sub-titulo:first-of-type { margin-top: 0; }
@@ -1157,6 +1161,50 @@ function renderEvolucao() {
   });
 }
 
+// Gastos fixos ainda não confirmados ("agendados"): o que apareceu como fixo em pelo menos 2 dos 3 meses anteriores e ainda não apareceu neste mês.
+// Valor = média desses meses; data = dia mais comum (compra no cartão cai no mês anterior ao da visão). Só para visão: não entra em nenhum total.
+const AG_CACHE = {};
+const semAcento = t => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const AG_IGNORA = new Set(["conta", "contas", "para", "pagamento", "mensal", "assinatura", "anuidade", "multa", "janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]);
+const agPalavras = d => semAcento(d).replace(/\(\d+\/\d+\)/g, " ").replace(/[^a-z\s]/g, " ").split(/\s+/).filter(w => w.length >= 4 && !AG_IGNORA.has(w));
+function agDist(a, b) { if (Math.abs(a.length - b.length) > 1) return 2; let d = 0, i = 0, j = 0; while (i < a.length && j < b.length) { if (a[i] === b[j]) { i++; j++; continue; } if (++d > 1) return 2; if (a.length > b.length) i++; else if (b.length > a.length) j++; else { i++; j++; } } return d + (a.length - i) + (b.length - j); }
+const agParecido = (x, y) => x.categoria === y.categoria && x.pal.some(a => y.pal.some(b => a === b || (a.length >= 5 && b.length >= 5 && agDist(a, b) <= 1)));
+async function agendadosDoMes(mes) {
+  if (AG_CACHE[mes]) return AG_CACHE[mes];
+  const todos = RESUMO.map(r => r.mes).sort(), antes = todos.filter(m => m < mes).slice(-3);
+  if (antes.length < 2) return (AG_CACHE[mes] = []);
+  const paineis = await Promise.all(antes.map(m => buscar("/painel.json?mes=" + m).then(r => r.json()).catch(() => null)));
+  const fixos = p => (p ? p.movimentacoes : []).filter(l => l.grupo === "gasto" && l.tipo === "Fixo" && l.valor < 0).map(l => ({ ...l, pal: agPalavras(l.descricao) })).filter(l => l.pal.length);
+  const grupos = [];   // cada grupo = um gasto que se repete
+  paineis.forEach((p, k) => fixos(p).forEach(l => {
+    let g = grupos.find(g => agParecido(g.ref, l));
+    if (!g) grupos.push(g = { ref: l, meses: {} });
+    (g.meses[antes[k]] = g.meses[antes[k]] || []).push(l);
+  }));
+  const atual = fixos(P);
+  const [ano, mm] = mes.split("-").map(Number);
+  const lista = grupos.filter(g => Object.keys(g.meses).length >= 2 && !atual.some(l => agParecido(g.ref, l))).map(g => {
+    const ms = Object.values(g.meses), soma = ms.map(m => m.reduce((a, l) => a - l.valor, 0));
+    const dias = ms.flat().map(l => +l.data.slice(8, 10)).sort((a, b) => a - b), dia = dias[Math.floor(dias.length / 2)];
+    const recente = g.meses[Object.keys(g.meses).sort().pop()][0];   // o nome e a conta valem os do mês mais recente
+    const cartao = /^Cartão/.test(recente.conta), base = cartao ? new Date(ano, mm - 2, 1) : new Date(ano, mm - 1, 1);
+    const ult = new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate(), d = Math.min(dia, ult);
+    const data = base.getFullYear() + "-" + String(base.getMonth() + 1).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+    const nome = recente.descricao.replace(/\s*\(\d+\/\d+\)$/, "").replace(/\b(janeiro|fevereiro|março|marco|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\b/gi, "").replace(/\s+/g, " ").trim();
+    return { nome: nome.charAt(0).toUpperCase() + nome.slice(1), categoria: g.ref.categoria, valor: soma.reduce((a, v) => a + v, 0) / soma.length, data };
+  }).sort((a, b) => a.data.localeCompare(b.data));
+  return (AG_CACHE[mes] = lista);
+}
+async function pintarAgendados() {
+  const mes = P.mes;
+  if (mes < HOJE.slice(0, 7)) return;   // mês já encerrado: nada fica agendado
+  let lista = [];
+  try { lista = await agendadosDoMes(mes); } catch (e) { return; }
+  const alvo = document.querySelector("#categorias .grupo-despesa.fixo");
+  if (!alvo || P.mes !== mes || !lista.length || alvo.querySelector(".ag-titulo")) return;
+  alvo.insertAdjacentHTML("beforeend", '<div class="ag-titulo">Agendados · ainda não confirmados</div>' + lista.map(a =>
+    '<div class="barra agendado" title="Previsão pela média dos meses anteriores. Não entra nos totais."><span class="cat-nome">' + icone(a.categoria) + esc(a.nome) + '</span><div><span class="ag-tag">agendado · ' + dataBr(a.data) + '</span></div><span>~' + brl0(a.valor) + "</span></div>").join(""));
+}
 function renderMeio() {
   const t = P.totais;
   const saldoBa = P.splitwise_saldos["Bia"] ?? 0, quites = Math.abs(saldoBa) < 0.005;
@@ -1198,6 +1246,7 @@ function renderMeio() {
   $("categorias").innerHTML = bloco("Fixo", "Gastos fixos", "fixo") + bloco("Variável", "Gastos variáveis", "variavel");
   animarGraficos($("categorias"));
   $("categorias").querySelectorAll("h3").forEach(el => el.onclick = () => filtrarPorTipo(el.dataset.tipo));
+  pintarAgendados();
   $("categorias").querySelectorAll(".barra").forEach(el => {
     const v = +el.dataset.v;
     dica(el, el.dataset.cat + ": " + brl(v) + " (" + Math.round(v / (t.gasto_total || 1) * 100) + "% dos gastos). Clique para ver as compras");
