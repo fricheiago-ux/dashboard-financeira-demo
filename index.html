@@ -379,6 +379,9 @@
   .nao-lancar input:focus-visible + .caixa { outline: 2px solid var(--ouro-claro); outline-offset: 2px; }
   .lista-tarefa li.feito .nao-lancar { display: none; }
   @media (hover: hover) { .nao-lancar:hover .caixa { background: var(--azul-claro); } .nao-lancar input:checked:hover + .caixa { background: var(--ouro-texto); } }
+  .lista-tarefa li.sec-titulo { display: block; padding: 14px 6px 6px; border-top: 0; max-height: 90px; }
+  .lista-tarefa li.sec-titulo b { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--ouro-texto); }
+  .lista-tarefa li.sec-titulo small { display: block; margin-top: 3px; font-size: 12.5px; font-weight: 600; color: var(--suave); }
   .lista-tarefa li.some { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; border-top-color: transparent; pointer-events: none; }
   .lista-tarefa .vazio { padding: 14px 0; }
   .tudo-certo { margin: 10px 0 0; padding: 12px 14px; border-radius: 12px; background: var(--azul-claro); color: var(--ouro-texto); font-size: 14px; font-weight: 800; animation: subir-leve .5s var(--ease) both; }
@@ -1325,15 +1328,16 @@ function calcularTarefas() {
     { id: "mapear", abre: "dialogo", titulo: "Mapeamento de gastos", sub: "Movimentações que ainda não sei o que são", itens: pe.duvidas,
       dica: "Toque numa despesa para me dizer o que ela é. Fica fora dos totais até você responder. Abaixo de cada uma, minha melhor pista.",
       chave: i => i.id, linha: i => '<span class="item-txt">' + dataBr(i.data) + " · " + esc(i.descricao) + " (" + esc(i.conta) + ")<small>" + esc(i.sugestao || i.pergunta || "") + "</small></span>" + valorHtml(i) + '<span class="seta" aria-hidden="true">›</span>' },
-    { id: "splitwise", abre: "lancei", titulo: "Lançar gastos no Splitwise", sub: "Saiu do seu bolso e parece despesa da casa", itens: pe.falta_no_splitwise,
-      dica: "Toque no botão do Splitwise para lançar o gasto: eu pergunto a divisão, a categoria e o nome, mostro o resumo e só lanço depois do seu OK. Se não for lançar, marque a caixinha ao lado: o gasto fica como está e sai desta lista.",
-      chave: i => i.id, linha: i => '<span class="item-txt">' + dataBr(i.data) + " · " + esc(i.descricao) + "<small>" + esc(i.categoria) + " · " + esc(i.conta) + '</small></span><span class="item-valor">' + brl(i.bruto ?? i.valor) + "</span>" },
+    { id: "splitwise", abre: "misto", titulo: "Splitwise", sub: "Gastos para lançar e lançamentos para conferir",
+      itens: [...pe.falta_no_splitwise.map(i => ({ ...i, _sec: "lancar" })), ...pe.sem_par_no_banco.map(i => ({ ...i, _sec: "conferir" }))],
+      dica: "Em “Para lançar”, toque no botão do Splitwise: eu pergunto a divisão, a categoria e o nome, mostro o resumo e só lanço depois do seu OK (ou marque a caixinha se não for lançar). Em “Para conferir”, toque no gasto para me explicar o que aconteceu.",
+      chave: i => i._sec === "conferir" ? "sw" + i.splitwise_id : i.id,
+      linha: i => i._sec === "conferir"
+        ? '<span class="item-txt">' + dataBr(i.data) + " · " + esc(i.descricao) + "<small>sua parte " + brl(i.minha_parte) + '</small></span><span class="item-valor">' + brl(i.valor) + '</span><span class="seta" aria-hidden="true">›</span>'
+        : '<span class="item-txt">' + dataBr(i.data) + " · " + esc(i.descricao) + "<small>" + esc(i.categoria) + " · " + esc(i.conta) + '</small></span><span class="item-valor">' + brl(i.bruto ?? i.valor) + "</span>" },
     { id: "devedores", abre: "", titulo: "Cobrar devedores", sub: "Gastos que você pagou por outras pessoas", itens: devedores, atraso: atrasados,
       dica: "Você pagou por estas pessoas. O prazo é o vencimento da fatura (dia 9). Elas não contam como gasto seu. Some sozinho quando o dinheiro aparece (Atualizar dados).",
-      chave: x => "dv" + x.pessoa + x.data, linha: x => '<span class="item-txt">' + esc(x.pessoa) + "<small>" + (/^academia plus/i.test(x.descricao) ? "Academia Plus" : esc(x.descricao)) + " · cobrado em " + dataBr(x.data) + '</small></span><span class="item-valor">' + brl(x.valor) + "<br>" + statusReembolso(x) + "</span>" },
-    { id: "sempar", abre: "dialogo", titulo: "Conferir o Splitwise", sub: "Lançado lá como pago por você, mas sem par no banco", itens: pe.sem_par_no_banco,
-      dica: "Você lançou como pago por você, mas não achei em nenhuma conta nem fatura. Toque para me explicar (dinheiro, outro cartão, valor diferente...).",
-      chave: i => "sw" + i.splitwise_id, linha: i => '<span class="item-txt">' + dataBr(i.data) + " · " + esc(i.descricao) + "<small>sua parte " + brl(i.minha_parte) + '</small></span><span class="item-valor">' + brl(i.valor) + '</span><span class="seta" aria-hidden="true">›</span>' }
+      chave: x => "dv" + x.pessoa + x.data, linha: x => '<span class="item-txt">' + esc(x.pessoa) + "<small>" + (/^academia plus/i.test(x.descricao) ? "Academia Plus" : esc(x.descricao)) + " · cobrado em " + dataBr(x.data) + '</small></span><span class="item-valor">' + brl(x.valor) + "<br>" + statusReembolso(x) + "</span>" }
   ].filter(t => t.itens.length);
 }
 function renderTarefas(vindoDeConclusao) {
@@ -1372,9 +1376,16 @@ function abrirTarefa(k, e) {
   const m = $("modal-tarefa"), caixa = m.querySelector(".md-in");
   $("modal-tarefa-titulo").textContent = t.titulo;
   $("tarefa-dica").textContent = t.dica;
-  $("tarefa-lista").innerHTML = t.itens.map((it, n) => '<li class="' + (t.abre === "dialogo" ? "item-clic" : "") + '" data-n="' + n + '" data-chave="' + esc(t.chave(it)) + '">'
-    + (t.abre === "lancei" ? '<label class="nao-lancar" title="Não vou lançar este gasto no Splitwise"><input type="checkbox" data-n="' + n + '" aria-label="Não vou lançar no Splitwise"><span class="caixa" aria-hidden="true">✓</span></label>' : "") + t.linha(it)
-    + (t.abre === "lancei" ? '<button class="ja-lancei" data-n="' + n + '" aria-label="Lançar no Splitwise">' + ANEL(n) + "</button>" : "") + "</li>").join("");
+  const modo = it => t.abre === "misto" ? (it._sec === "lancar" ? "lancei" : "dialogo") : t.abre;
+  let secAnt = null;
+  $("tarefa-lista").innerHTML = t.itens.map((it, n) => {
+    const md = modo(it);
+    let cab = "";
+    if (t.abre === "misto" && it._sec !== secAnt) { secAnt = it._sec; cab = '<li class="sec-titulo"><b>' + (it._sec === "lancar" ? "Para lançar" : "Para conferir") + "</b><small>" + (it._sec === "lancar" ? "Saiu do seu bolso e parece despesa da casa" : "Lançado lá como pago por você, mas sem par no banco") + "</small></li>"; }
+    return cab + '<li class="' + (md === "dialogo" ? "item-clic" : "") + '" data-n="' + n + '" data-sec="' + (it._sec || "") + '" data-chave="' + esc(t.chave(it)) + '">'
+      + (md === "lancei" ? '<label class="nao-lancar" title="Não vou lançar este gasto no Splitwise"><input type="checkbox" data-n="' + n + '" aria-label="Não vou lançar no Splitwise"><span class="caixa" aria-hidden="true">✓</span></label>' : "") + t.linha(it)
+      + (md === "lancei" ? '<button class="ja-lancei" data-n="' + n + '" aria-label="Lançar no Splitwise">' + ANEL(n) + "</button>" : "") + "</li>";
+  }).join("");
   $("tarefa-lista").querySelectorAll("li.item-clic").forEach(li => li.onclick = ev => abrirClassificar(t, t.itens[+li.dataset.n], li, ev));
   $("tarefa-lista").querySelectorAll(".nao-lancar input").forEach(c => c.onchange = () => { if (c.checked) naoLancar(t, t.itens[+c.dataset.n], c.closest("li"), c); });
   $("tarefa-lista").querySelectorAll(".ja-lancei").forEach(b => b.onclick = ev => abrirLancar(t, t.itens[+b.dataset.n], b.closest("li"), ev));
@@ -1384,7 +1395,13 @@ function abrirTarefa(k, e) {
 }
 function atualizarCabecalhoTarefa() {
   const t = TAREFAS.find(x => x.id === POPUP_TAREFA); if (!t) return;
-  const restam = [...$("tarefa-lista").querySelectorAll("li")].filter(li => !li.classList.contains("feito") && !li.classList.contains("some")).length;
+  const todos = [...$("tarefa-lista").querySelectorAll("li")];
+  const restam = todos.filter(li => !li.classList.contains("sec-titulo") && !li.classList.contains("feito") && !li.classList.contains("some")).length;
+  // o título de uma seção some quando todos os itens dela foram resolvidos
+  let cab = null, vivos = 0;
+  const fechaSec = () => { if (cab) cab.classList.toggle("some", vivos === 0); };
+  todos.forEach(li => { if (li.classList.contains("sec-titulo")) { fechaSec(); cab = li; vivos = 0; } else if (!li.classList.contains("feito") && !li.classList.contains("some")) vivos++; });
+  fechaSec();
   $("tarefa-kicker").innerHTML = "<b>" + restam + "</b> " + (restam === 1 ? "pendência" : "pendências") + " · " + nomeMes(P.mes);
   $("tarefa-rodape").innerHTML = t.id === "devedores" ? "Falta receber " + brl(t.itens.reduce((a, x) => a + x.valor, 0)) + " no total." : "";
   const jaTem = $("tarefa-lista").parentNode.querySelector(".tudo-certo");
@@ -1415,7 +1432,7 @@ async function naoLancar(t, item, li, caixa) {
   marcarFeito(li);
   await recarregar();
   const faltam = new Set(P.pendentes.falta_no_splitwise.map(i => i.id));
-  $("tarefa-lista").querySelectorAll("li[data-chave]").forEach(l => { if (!faltam.has(l.dataset.chave)) marcarFeito(l); });
+  $("tarefa-lista").querySelectorAll('li[data-sec="lancar"]').forEach(l => { if (!faltam.has(l.dataset.chave)) marcarFeito(l); });
 }
 // Lançar no Splitwise (única escrita da dash no Splitwise): pergunta divisão, categoria e nome, mostra o resumo e só lança no botão final.
 let CATS_SPLIT = null;
@@ -1481,11 +1498,11 @@ async function confirmarLancamento() {
   if (!r.lancado) avisoFlutuante("Lançado no Splitwise, mas a dash ainda não reconheceu. Clique em Atualizar dados.");
   // outros gastos que o Splitwise passou a reconhecer também são marcados
   const faltam = new Set(P.pendentes.falta_no_splitwise.map(i => i.id));
-  $("tarefa-lista").querySelectorAll("li[data-chave]").forEach(l => { if (!faltam.has(l.dataset.chave)) marcarFeito(l); });
+  $("tarefa-lista").querySelectorAll('li[data-sec="lancar"]').forEach(l => { if (!faltam.has(l.dataset.chave)) marcarFeito(l); });
 }
 async function abrirClassificar(t, item, li, e) {
   CL = { t, item, li };
-  const sempar = t.id === "sempar", entrada = !sempar && item.valor > 0;
+  const sempar = item._sec === "conferir", entrada = !sempar && item.valor > 0;
   if (!sempar && !CATEGORIAS) CATEGORIAS = await buscar("/categorias").then(r => r.json()).catch(() => ({ gasto: [], receita: [] }));
   const m = $("modal-classificar"), caixa = m.querySelector(".md-in");
   $("cl-kicker").textContent = t.titulo;
@@ -1511,7 +1528,7 @@ function fecharClassificar() { const m = $("modal-classificar"); m.classList.rem
 async function salvarClassificacao() {
   if (!CL) return;
   if (CL.modo === "lancar") return avancarLancar();
-  const { t, item, li } = CL, sempar = t.id === "sempar", desc = $("cl-desc").value.trim(), cat = sempar ? "" : $("cl-cat").value.trim();
+  const { t, item, li } = CL, sempar = item._sec === "conferir", desc = $("cl-desc").value.trim(), cat = sempar ? "" : $("cl-cat").value.trim();
   if (!desc) { $("cl-erro").textContent = sempar ? "Explique em poucas palavras." : "Diga o que é em poucas palavras."; return; }
   if (!sempar && !cat) { $("cl-erro").textContent = "Escolha ou digite uma categoria."; return; }
   const div = document.querySelector('input[name="cl-div"]:checked');
