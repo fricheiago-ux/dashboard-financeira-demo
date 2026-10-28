@@ -8,7 +8,7 @@
   "gasto_variavel": 2800,
   "guardar": 600
  },
- "metas_origem": "Dados fictícios de demonstração. Renda própria de R$ 6.000 (sem contar ajuda da família): gastos até R$ 5.600 (fixos até R$ 2.800 e variáveis até R$ 2.800) e investir pelo menos R$ 600 (10%). Ajustáveis",
+ "metas_origem": "Dados fictícios de demonstração. Renda própria de R$ 6.000 (sem contar a renda extra): gastos até R$ 5.600 (fixos até R$ 2.800 e variáveis até R$ 2.800) e investir pelo menos R$ 600 (10%). Ajustáveis",
  "reserva_emergencia": {
   "meses_de_cobertura": 5,
   "meses_na_media": 3,
@@ -30,9 +30,9 @@
   "duvida_entrada": 105.0,
   "a_receber_terceiros": 180.63,
   "receitas_total": 7694.55,
-  "ajuda_familia": 0.0,
-  "renda_propria": 7694.55,
-  "sobra_sem_ajuda": 2485.6,
+  "renda_extra": 1750.0,
+  "renda_propria": 5944.55,
+  "sobra_sem_extra": 735.6,
   "movimentado": 7566.24,
   "balanco": 2485.6,
   "viagem_tag": 642.0,

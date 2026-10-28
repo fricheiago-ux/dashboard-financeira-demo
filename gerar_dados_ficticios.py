@@ -15,7 +15,7 @@ CONTA, PAY, INTER, GLOBAL, CARTAO = "Santander", "Nubank", "Inter", "Revolut", "
 FLEX = CONTA   # o benefício cai na conta do salário
 TAG = "viagem lisboa"
 METAS = {"renda_propria_base": 6000, "gasto_total": 5600, "gasto_fixo": 2800, "gasto_variavel": 2800, "guardar": 600}
-ORIGEM = "Dados fictícios de demonstração. Renda própria de R$ 6.000 (sem contar ajuda da família): gastos até R$ 5.600 (fixos até R$ 2.800 e variáveis até R$ 2.800) e investir pelo menos R$ 600 (10%). Ajustáveis"
+ORIGEM = "Dados fictícios de demonstração. Renda própria de R$ 6.000 (sem contar a renda extra): gastos até R$ 5.600 (fixos até R$ 2.800 e variáveis até R$ 2.800) e investir pelo menos R$ 600 (10%). Ajustáveis"
 
 
 def r2(x):
@@ -58,7 +58,7 @@ def construir(mes, k):
         ajuda = {"2026-08": 1500, "2026-09": 1000, "2026-10": 800}[mes]
         m.linha(8, "Venda do notebook", PAY, "PIX", "Eventual", ajuda, "receita", "Venda notebook", "PIX RECEBIDO COMPRADOR")
         if mes == "2026-09":
-            m.linha(20, "Presente da família", PAY, "PIX", "Eventual", 200, "receita", "Presente da família", "PIX RECEBIDO")
+            m.linha(20, "Cliente: logotipo", PAY, "PIX", "Eventual", 200, "receita", "Trabalho extra (sites)", "PIX RECEBIDO")
         for d in range(1, 11):
             m.linha(d * 2, "Rendimento da reserva", PAY, "CDI", "Eventual", r2(3.4 + rnd.random() * 2.4), "rendimento", "Rendimentos", "RENDIMENTO DIARIO")
         m.linha(14, "Transferência para a Revolut", PAY, "PIX", "", -300, "interno", "Entre contas", "PIX ENVIADO", nota="Movimento entre as suas contas (viagem)")
@@ -147,9 +147,9 @@ def montar(mes, k):
          "a_receber_outros_mes": 0, "duvida_saida": -soma([d for d in pend["duvidas"] if d["valor"] < 0]), "duvida_entrada": soma([d for d in pend["duvidas"] if d["valor"] > 0]),
          "a_receber_terceiros": r2(sum(x["valor"] for x in terceiros if not x["reembolsado_em"]))}
     t["receitas_total"] = r2(t["receita_fixa"] + t["receita_eventual"] + t["rendimentos"])
-    t["ajuda_familia"] = r2(sum(v for c, v in rec_cat.items() if c in ("Ajuda da família", "Presente da família")))
-    t["renda_propria"] = r2(t["receitas_total"] - t["ajuda_familia"])
-    t["sobra_sem_ajuda"] = r2(t["renda_propria"] - t["gasto_total"])
+    t["renda_extra"] = r2(sum(v for c, v in rec_cat.items() if c in ("Trabalho extra (sites)", "Venda notebook")))
+    t["renda_propria"] = r2(t["receitas_total"] - t["renda_extra"])
+    t["sobra_sem_extra"] = r2(t["renda_propria"] - t["gasto_total"])
     t["movimentado"] = r2(t["gasto_total"] - t["a_pagar_mes"] + t["a_receber_mes"] + t["a_receber_outros_mes"] + sum(x["valor"] for x in terceiros))
     t["balanco"] = r2(t["receitas_total"] - t["gasto_total"])
     tag = [l for l in gastos if TAG in l["tags"]]

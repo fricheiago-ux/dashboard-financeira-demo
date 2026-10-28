@@ -8,7 +8,7 @@
   "gasto_variavel": 2800,
   "guardar": 600
  },
- "metas_origem": "Dados fictícios de demonstração. Renda própria de R$ 6.000 (sem contar ajuda da família): gastos até R$ 5.600 (fixos até R$ 2.800 e variáveis até R$ 2.800) e investir pelo menos R$ 600 (10%). Ajustáveis",
+ "metas_origem": "Dados fictícios de demonstração. Renda própria de R$ 6.000 (sem contar a renda extra): gastos até R$ 5.600 (fixos até R$ 2.800 e variáveis até R$ 2.800) e investir pelo menos R$ 600 (10%). Ajustáveis",
  "reserva_emergencia": {
   "meses_de_cobertura": 5,
   "meses_na_media": 3,
@@ -30,9 +30,9 @@
   "duvida_entrada": 105.0,
   "a_receber_terceiros": 180.63,
   "receitas_total": 8346.5,
-  "ajuda_familia": 200.0,
-  "renda_propria": 8146.5,
-  "sobra_sem_ajuda": 3745.85,
+  "renda_extra": 2400.0,
+  "renda_propria": 5946.5,
+  "sobra_sem_extra": 1545.85,
   "movimentado": 6824.73,
   "balanco": 3945.85,
   "viagem_tag": 410.0,
@@ -61,10 +61,9 @@
  },
  "receitas_por_categoria": {
   "Salário": 5200.0,
-  "Trabalho extra (sites)": 1200.0,
+  "Trabalho extra (sites)": 1400.0,
   "Venda notebook": 1000.0,
-  "Benefício Flex": 700.0,
-  "Presente da família": 200.0
+  "Benefício Flex": 700.0
  },
  "contas": [
   {
@@ -424,9 +423,9 @@
    "nome_original": "PIX RECEBIDO",
    "ids_extras": [],
    "tags": [],
-   "descricao": "Presente da família",
+   "descricao": "Cliente: logotipo",
    "grupo": "receita",
-   "categoria": "Presente da família"
+   "categoria": "Trabalho extra (sites)"
   },
   {
    "id": "demo-2026-09-006",
